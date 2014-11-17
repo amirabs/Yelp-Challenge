@@ -91,8 +91,8 @@ def cluster_business(businesses):
 	for index in range(len(businesses)):
 		businesses[index].cluster_id=y_pred[index]
 		clusters[y_pred[index]].businesses.append(businesses[index])
-
-
+	for cl in clusters:
+		print len(cl.businesses)
 	# plt.show()
 
 

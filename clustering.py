@@ -12,26 +12,17 @@ from sklearn.metrics import euclidean_distances
 from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import StandardScaler
 
+# Classes Import
+from classes import *
+from read_data import *
 
+PATH="dataset/"
 
-PATH="/Users/amir/Desktop/yelp/dataset/"
-
-
-class Business:
-	def __init__(self, business_id, longitude=0, latitude=0, review_count=0, open_date=0, closing_date=0, ):
-		self.review_count=review_count
-		self.business_id = business_id
-		self.longitude = longitude
-		self.latitude = latitude
-		self.open_date = open_date
-		self.closing_date = closing_date
-	def __str__(self):
-		return str(self.business_id)+ ": ("+str(self.longitude)+","+str(self.latitude)+")"
-
-businesses = dict();
-
+businesses= dict()
+clusters = []
 
 def cluster_business(businesses):
+	NClusters=100
 	np.random.seed(0)
 
 	# Generate datasets. We choose the size big enough to see the scalability
@@ -55,16 +46,18 @@ def cluster_business(businesses):
 	count =0;
 	for b in businesses:
 		X=vstack([X,[b.longitude,b.latitude]])
-		if(count>1000):
-			break
+		# if(count>1000):
+		# 	break
 		count+=1
-	print type(X)
-	print X
+	# print type(X)
+	# print X
 
-	dbscan = cluster.DBSCAN(eps=.2)
+	k_means = cluster.MiniBatchKMeans(n_clusters=NClusters)
+	# dbscan = cluster.DBSCAN(eps=.2)
 
 	for name, algorithm in [
-							('DBSCAN', dbscan)
+							('MiniBatchKMeans', k_means),
+							# ('DBSCAN', dbscan)
 						   ]:
 		# predict cluster memberships
 		t0 = time.time()
@@ -89,12 +82,20 @@ def cluster_business(businesses):
 		# plt.ylim(-2, 2)
 		plt.xticks(())
 		plt.yticks(())
-		plt.text(.99, .01, ('%.2fs' % (t1 - t0)).lstrip('0'),
-				 transform=plt.gca().transAxes, size=15,
-				 horizontalalignment='right')
 		plot_num += 1
+	print y_pred
 
-	plt.show()
+	clusters=[]
+	for index in range(NClusters):
+		clusters.append(Cluster([]))
+	for index in range(len(businesses)):
+		businesses[index].cluster_id=y_pred[index]
+		clusters[y_pred[index]].businesses.append(businesses[index])
+
+
+	# plt.show()
+
+
 
 def init_business():
 	id_count=0
@@ -112,7 +113,9 @@ def init_business():
 		return businesses_list
 
 def main():
-	businesses_list = init_business()
+	# businesses_list = init_business()
+	businesses_list=load_businesses("./dataset",[],0)
+	businesses_list.sort(key=operator.attrgetter('business_id'));
 	cluster_business(businesses_list)
 
 if __name__ == "__main__":

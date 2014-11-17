@@ -1,5 +1,7 @@
 import json
 import string
+import numpy as np
+from numpy import *
 from datetime import datetime
 from sets import Set
 
@@ -8,8 +10,9 @@ from classes import *
 # Global params
 base_date = datetime.strptime("2000-01-01",'%Y-%m-%d')
 closing_threshold = 365
+interval = 60 # number of days in moving average 
 
-def load_reviews(path):
+def load_reviews(path, businesses):
     reviews = dict()
 
     print "Reading review data"
@@ -28,14 +31,41 @@ def load_reviews(path):
             if (not last_review_in_dataset) or (date > last_review_in_dataset):
                 last_review_in_dataset = date
 
-#    for business_id, reviews_for_business in reviews:
-#        reviews_by_day = dict()
-#        for review in reviews_for_business:
+    print "Computing moving averages"
+    moving_avgs = dict()
+    for business in businesses:
+        if business_id in reviews:
+            business_id = business.business_id
+            reviews_for_business = reviews[business_id]
+            reviews_of_days = [[] for _ in range(last_review_in_dataset + 1)]
+            moving_avg = []
+            first_review = None
+            last_review = None
+            for review in reviews_for_business:
+                reviews_of_days[date].append(review['stars'])
+                date = (datetime.strptime(review['date'],'%Y-%m-%d') - base_date).days
+                if (not first_review) or (date < first_review):
+                    first_review = date
+                if (not last_review) or (date > last_review):
+                    last_review = date
+
+            for d in range(len(reviews_of_days)):
+                past_days = reviews_of_days[max(0, d - interval):d]
+                ratings_in_interval = reduce(lambda x, y: x + y, past_days, [])
+                if len(ratings_in_interval) > 0:
+                    moving_avg.append(average(ratings_in_interval))
+                else:
+                    moving_avg.append(0)
+
+            business.open_date = first_review
+            business.last_review = last_review
+            if (last_review < last_review_in_dataset - closing_threshold):
+                business.closing_date = last_review
+            business.moving_avg_ratings = moving_avg
 
     print "Last review in dataset: " + str(last_review_in_dataset)
-    return reviews, last_review_in_dataset
 
-def load_businesses(path, reviews, last_review_in_dataset):
+def load_businesses(path):
     businesses = []
 
     print "Reading business data"
@@ -56,26 +86,7 @@ def load_businesses(path, reviews, last_review_in_dataset):
             if 'Price Range' in business_attributes:
                 business_price_range = int(business_attributes['Price Range'])
 
-            open_date = -1
-            closing_date = -1
-            if business_id in reviews:
-                reviews_of_business = reviews[business_id]
-
-                first_review = None
-                last_review = None
-                for review in reviews_of_business:
-                    date = (datetime.strptime(review['date'],'%Y-%m-%d') - base_date).days
-                    if (not first_review) or (date < first_review):
-                        first_review = date
-                    if (not last_review) or (date > last_review):
-                        last_review = date
-
-                open_date = first_review
-
-                if (last_review < last_review_in_dataset - closing_threshold):
-                    closing_date = last_review
-
-            businesses.append(Business(business_id, business['review_count'], [], business_categories, open_date, closing_date, business['longitude'], business['latitude'], business_price_range, zip_code))
+            businesses.append(Business(business_id, business['review_count'], business_categories, business['longitude'], business['latitude'], business_price_range, zip_code))
 
     return businesses
 
@@ -102,7 +113,6 @@ def print_list_of_businesses(businesses):
         print business
 
 if __name__ == "__main__":
-    #reviews, last_review_in_dataset = load_reviews()
-    reviews, last_review_in_dataset = [], 0
-    businesses = load_businesses(".", reviews, last_review_in_dataset)
-    generate_cat_features(businesses)
+    businesses = load_businesses(".")
+    sorted_businesses = sorted(businesses, key = lambda b: b.review_count)
+    load_reviews(".", sorted_businesses[-10:])

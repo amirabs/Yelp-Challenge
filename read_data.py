@@ -1,25 +1,30 @@
 import json
+import string
 from datetime import datetime
 from sets import Set
 
+# Global params
+base_date = datetime.strptime("2000-01-01",'%Y-%m-%d')
+closing_threshold = 365
+
 class Business:
-    def __init__(self, id_string,review_count, open_date=0, closing_date=0, longitude=0, latitude=0):
-        self.review_count=review_count
+    def __init__(self, id_string,review_count, categories=[], open_date=-1, closing_date=-1, longitude=0, latitude=0, price_range=-1, zip_code=-1):
+        self.review_count = review_count
+        self.categories = categories
         self.id_string = id_string
         self.longitude = longitude
         self.latitude = latitude
         self.open_date = open_date
         self.closing_date = closing_date
+        self.price_range = price_range
+        self.cat_features = None
+        self.zip_code = zip_code
 
     def __str__(self):
-        return "("+str(self.id_string)+","+str(self.review_count)+", opened on: "+str(self.open_date)+", closed on:"+str(self.closing_date)+")"
+        return "("+str(self.id_string)+","+str(self.review_count)+", opened on: "+str(self.open_date)+", closed on:"+str(self.closing_date)+",price"+str(self.price_range)+")"
 
-def read_date():
-    closing_threshold = 365
-    base_date = datetime.strptime("2000-01-01",'%Y-%m-%d')
-    businesses = []
+def load_reviews():
     reviews = dict()
-    all_categories = Set()
 
     print "Reading review data"
     last_review_in_dataset = None
@@ -37,16 +42,29 @@ def read_date():
             if (not last_review_in_dataset) or (date > last_review_in_dataset):
                 last_review_in_dataset = date
 
-    print last_review_in_dataset
+    print "Last review in dataset: " + str(last_review_in_dataset)
+    return reviews, last_review_in_dataset
+
+def load_businesses(reviews, last_review_in_dataset):
+    businesses = []
+
     print "Reading business data"
     with open('yelp_academic_dataset_business.json') as json_file:
         for line in json_file:
             business = json.loads(line)
             business_id = business['business_id']
             business_categories = business['categories']
+            business_attributes = business['attributes']
+            business_address = business['full_address']
 
-            for category in business_categories:
-                all_categories.add(category)
+            zip_code_str = string.split(business_address, " ")[-1]
+            zip_code = -1
+            if zip_code_str.isdigit():
+                zip_code = int(zip_code)
+
+            business_price_range = -1
+            if 'Price Range' in business_attributes:
+                business_price_range = int(business_attributes['Price Range'])
 
             open_date = -1
             closing_date = -1
@@ -67,14 +85,34 @@ def read_date():
                 if (last_review < last_review_in_dataset - closing_threshold):
                     closing_date = last_review
 
-            businesses.append(Business(business_id, business['review_count'], open_date, closing_date, business['longitude'], business['latitude']))
+            businesses.append(Business(business_id, business['review_count'], business_categories, open_date, closing_date, business['longitude'], business['latitude'], business_price_range, zip_code))
 
-    print all_categories
     return businesses
+
+def generate_cat_features(businesses):
+    print "Generating category features"
+
+    all_categories = Set()
+    for business in businesses:
+        for category in business.categories:
+            all_categories.add(category)
+
+    list_of_categories = list(all_categories)
+    for business in businesses:
+        cat_features = []
+        for category in list_of_categories:
+            if category in business.categories:
+                cat_features.append(1)
+            else:
+                cat_features.append(0)
+        business.cat_features = cat_features
 
 def print_list_of_businesses(businesses):
     for business in businesses:
         print business
 
 if __name__ == "__main__":
-    read_date()
+    #reviews, last_review_in_dataset = load_reviews()
+    reviews, last_review_in_dataset = [], 0
+    businesses = load_businesses(reviews, last_review_in_dataset)
+    generate_cat_features(businesses)

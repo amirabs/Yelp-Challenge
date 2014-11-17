@@ -20,6 +20,7 @@ def correlation_bus(x,y):
 
 	return np.dot(a,b)/(end-start)
 
+
 def variance_vec(businesses):
 	n=len(businesses)
 	var_vec=np.zeros((n,1))

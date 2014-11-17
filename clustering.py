@@ -70,20 +70,16 @@ def cluster_business(businesses):
 
 		# plot
 		# plt.subplot(4, 7, plot_num)
-		# if i_dataset == 0:
-		# 	plt.title(name, size=18)
+		plt.title(name, size=18)
 		plt.scatter(X[:, 0], X[:, 1], color=colors[y_pred].tolist(), s=10)
 
 		if hasattr(algorithm, 'cluster_centers_'):
 			centers = algorithm.cluster_centers_
 			center_colors = colors[:len(centers)]
 			plt.scatter(centers[:, 0], centers[:, 1], s=100, c=center_colors)
-		# plt.xlim(-2, 2)
-		# plt.ylim(-2, 2)
 		plt.xticks(())
 		plt.yticks(())
 		plot_num += 1
-	print y_pred
 
 	clusters=[]
 	for index in range(NClusters):
@@ -91,9 +87,8 @@ def cluster_business(businesses):
 	for index in range(len(businesses)):
 		businesses[index].cluster_id=y_pred[index]
 		clusters[y_pred[index]].businesses.append(businesses[index])
-	for cl in clusters:
-		print len(cl.businesses)
-	# plt.show()
+	return clusters
+	plt.show()
 
 
 

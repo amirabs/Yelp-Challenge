@@ -37,7 +37,7 @@ def cluster_business(businesses):
 	colors = np.array([x for x in 'bgrcmykbgrcmykbgrcmykbgrcmyk'])
 	colors = np.hstack([colors] * 20)
 
-	plt.figure(figsize=(17, 9.5))
+	plt.figure(1)
 	plt.subplots_adjust(left=.001, right=.999, bottom=.001, top=.96, wspace=.05,
 						hspace=.01)
 

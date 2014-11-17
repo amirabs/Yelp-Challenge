@@ -8,10 +8,15 @@ from datetime import datetime
 
 PATH="/Users/amir/Desktop/yelp/dataset/"
 
+
 class Business:
-	def __init__(self, id_string,review_count):
+	def __init__(self, id_string,review_count, open_date=0, closing_date=0, longitude=0, latitude=0):
 		self.review_count=review_count
 		self.id_string = id_string
+		self.longitude = longitude
+		self.latitude = latitude
+		self.open_date = open_date
+		self.closing_date = closing_date
 	def __str__(self):
 		return  "("+str(self.id_string)+","+str(self.review_count)+")"
 
@@ -80,7 +85,7 @@ def move_ave(businessid):
 			if(review['business_id']==businessid):
 				star=review['stars']
 				sum+=star
-				recent_stars=insert(recent_stars,[0],star)
+				recent_stars=insert(recent_staers,[0],star)
 				move_ave.append(average(recent_stars[0:interval]))         	
 				ave.append(sum/i)
 				stars.append(star)
@@ -91,7 +96,7 @@ def move_ave(businessid):
 		plt.show()
 
 def main():
-	day_move_ave("rBPQuQgTcMtUq5-RYhY2uQ")
+	day_move_ave("zt1TpTuJ6y9n551sw9TaEg")
 
 if __name__ == "__main__":
 	count_review_per_business()

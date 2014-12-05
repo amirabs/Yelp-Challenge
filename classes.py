@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import math
+from numpy import *
 
 class Cluster:
     def __init__(self, businesses):
@@ -31,3 +33,9 @@ class Business:
         plt.plot(range(num_days), self.moving_avg_ratings)
         plt.axis([0, num_days, 0 , 5]);
         plt.show()
+
+    def diff_features(self, other):
+        diff_features = []
+        geo_dist = math.pow(self.longitude - other.longitude, 2) + math.pow(self.latitude - other.latitude, 2)
+        diff_features.append(geo_dist)
+        return diff_features + map(lambda xs: 1 if xs[0] == xs[1] else 0, zip(self.cat_features, other.cat_features))

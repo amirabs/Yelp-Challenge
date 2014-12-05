@@ -22,7 +22,7 @@ businesses= dict()
 clusters = []
 
 def cluster_business(businesses):
-	NClusters=100
+	NClusters=50
 	np.random.seed(0)
 
 	# Generate datasets. We choose the size big enough to see the scalability
@@ -80,6 +80,8 @@ def cluster_business(businesses):
 		plt.xticks(())
 		plt.yticks(())
 		plot_num += 1
+	# plt.show()
+
 
 	clusters=[]
 	for index in range(NClusters):
@@ -88,9 +90,6 @@ def cluster_business(businesses):
 		businesses[index].cluster_id=y_pred[index]
 		clusters[y_pred[index]].businesses.append(businesses[index])
 	return clusters
-	plt.show()
-
-
 
 def init_business():
 	id_count=0
@@ -109,9 +108,14 @@ def init_business():
 
 def main():
 	# businesses_list = init_business()
-	businesses_list=load_businesses("./dataset",[],0)
+	businesses_list=load_businesses("./dataset")
 	businesses_list.sort(key=operator.attrgetter('business_id'));
-	cluster_business(businesses_list)
+	clusters=cluster_business(businesses_list)
+	for c in clusters:
+		if(len(c.businesses)>3000):
+			return c
 
 if __name__ == "__main__":
-	main()
+	c=main()
+	print c
+

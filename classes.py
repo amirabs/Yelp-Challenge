@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 class Cluster:
     def __init__(self, businesses):
         self.businesses = businesses
+    def __str__(self):
+        name="["
+        for b in self.businesses:
+            name+=str(b)+",";
+        return name+"]"
 
 class Business:
     def __init__(self, business_id, review_count,
@@ -30,4 +35,4 @@ class Business:
         plt.figure(fig)
         plt.plot(range(num_days), self.moving_avg_ratings)
         plt.axis([0, num_days, 0 , 5]);
-        plt.show()
+        # plt.show()

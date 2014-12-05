@@ -57,8 +57,8 @@ def correlation_mat(businesses,var_vec):
 	plt.pcolor(corr)
 	plt.colorbar()
 	# plt.show()
-	businesses[max_i].plot_moving_avg(3)
-	businesses[max_j].plot_moving_avg(4)
+	# businesses[max_i].plot_moving_avg(3)
+	# businesses[max_j].plot_moving_avg(4)
 	return corr
 	# print corr
 
@@ -82,6 +82,10 @@ def pair_cor():
 	var_vec= variance_vec(cluster_businesses)
 	corr=correlation_mat(cluster_businesses,var_vec)
 	to_file(corr,len(cluster_businesses))
+	generate_cat_features(cluster_businesses)
+	features = construct_feature_diff_matrix(cluster_businesses)
+	print features.shape
+	np.savetxt("feature_mat.txt",features)
 
 def to_file(corr,n):
 	corr_1d=np.zeros((n)*(n-1)/2)

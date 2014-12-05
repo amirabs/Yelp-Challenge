@@ -93,7 +93,7 @@ def move_ave(businessid):
 				i=i+1
 		plt.plot(ys, move_ave)
 		plt.axis([0, i, 0 , 5]);
-		plt.show()
+		# plt.show()
 
 def main():
 	day_move_ave("zt1TpTuJ6y9n551sw9TaEg")

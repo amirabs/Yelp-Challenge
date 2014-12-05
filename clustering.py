@@ -111,9 +111,7 @@ def main():
 	businesses_list=load_businesses("./dataset")
 	businesses_list.sort(key=operator.attrgetter('business_id'));
 	clusters=cluster_business(businesses_list)
-	for c in clusters:
-		if(len(c.businesses)>3000):
-			return c
+	
 
 if __name__ == "__main__":
 	c=main()

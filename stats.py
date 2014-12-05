@@ -69,7 +69,7 @@ def cluster_num(businesses):
 	return businesses[-1].cluster_id
 
 def pair_cor():
-	review_count_thres=2000
+	review_count_thres=500
 
 	businesses_list=load_businesses("./dataset")
 	businesses_list.sort(key=operator.attrgetter('business_id'));

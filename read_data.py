@@ -108,6 +108,8 @@ def generate_cat_features(businesses):
                 cat_features.append(0)
         business.cat_features = cat_features
 
+    print "Number of features: " + str(len(list_of_categories))
+
 def print_list_of_businesses(businesses):
     for business in businesses:
         print business
@@ -115,4 +117,5 @@ def print_list_of_businesses(businesses):
 if __name__ == "__main__":
     businesses = load_businesses(".")
     sorted_businesses = sorted(businesses, key = lambda b: b.review_count)
-    load_reviews(".", sorted_businesses[-10:])
+    generate_cat_features(sorted_businesses)
+    load_reviews(".", sorted_businesses[-100:])

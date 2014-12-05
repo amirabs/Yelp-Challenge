@@ -5,6 +5,11 @@ from numpy import *
 class Cluster:
     def __init__(self, businesses):
         self.businesses = businesses
+    def __str__(self):
+        name="["
+        for b in self.businesses:
+            name+=str(b)+",";
+        return name+"]"
 
 class Business:
     def __init__(self, business_id, review_count,

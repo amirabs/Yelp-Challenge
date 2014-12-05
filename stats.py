@@ -53,14 +53,14 @@ def correlation_mat(businesses,var_vec):
 				max_j=j
 				max_i=i
 				maxim=corr[i][j]
-	plot_corr=np.array(corr)
 	plt.figure(2)
-	plt.pcolor(plot_corr)
+	plt.pcolor(corr)
 	plt.colorbar()
-	plt.show()
+	# plt.show()
 	businesses[max_i].plot_moving_avg(3)
 	businesses[max_j].plot_moving_avg(4)
-	print corr
+	return corr
+	# print corr
 
 def cluster_num(businesses):
 	businesses.sort(key=operator.attrgetter('review_count'));
@@ -68,17 +68,36 @@ def cluster_num(businesses):
 	print businesses[-1].review_count
 	return businesses[-1].cluster_id
 
-def main():
-	review_count_thres=1000
+def pair_cor():
+	review_count_thres=2000
 
 	businesses_list=load_businesses("./dataset")
 	businesses_list.sort(key=operator.attrgetter('business_id'));
 	clusters=cluster_business(businesses_list)
-	cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clusters[28].businesses)
+	for c in clusters:
+		if(len(c.businesses)>3000):
+			clus=c
+	cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clus.businesses)
 	load_reviews("./dataset",cluster_businesses)
 	var_vec= variance_vec(cluster_businesses)
-	correlation_mat(cluster_businesses,var_vec)
+	corr=correlation_mat(cluster_businesses,var_vec)
+	to_file(corr,len(cluster_businesses))
+
+def to_file(corr,n):
+	corr_1d=np.zeros((n)*(n-1)/2)
+	print n
+	ind=0
+	for i in range(n):
+		for j in range(i):
+			corr_1d[ind]=corr[i][j]
+			ind+=1
+	print corr
+	print corr_1d
+	np.save("corr_1d",corr_1d)
+	np.savetxt("corr_1d.txt",corr_1d)
+
+
 
 if __name__ == "__main__":
-	main()
+	pair_cor();
 

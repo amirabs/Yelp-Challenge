@@ -68,7 +68,7 @@ def day_move_ave(businessid):
 
 		plt.plot(range(len(reviews_of_days)), move_ave)
 		plt.axis([(first_date - start_date).days, num_days, 0 , 5]);
-		plt.show()	
+		# plt.show()	
 
 def move_ave(businessid):
 	ave = []

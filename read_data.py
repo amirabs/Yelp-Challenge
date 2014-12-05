@@ -108,6 +108,18 @@ def generate_cat_features(businesses):
                 cat_features.append(0)
         business.cat_features = cat_features
 
+    print "Number of features: " + str(len(list_of_categories))
+
+def construct_feature_diff_matrix(businesses):
+    print "Constructing feature diff matrix"
+
+    diff_matrix = []
+    for i in range(len(businesses)):
+        for j in range(i):
+            diff_matrix.append(businesses[i].diff_features(businesses[j]))
+
+    return array(diff_matrix)
+
 def print_list_of_businesses(businesses):
     for business in businesses:
         print business
@@ -115,4 +127,5 @@ def print_list_of_businesses(businesses):
 if __name__ == "__main__":
     businesses = load_businesses(".")
     sorted_businesses = sorted(businesses, key = lambda b: b.review_count)
-    load_reviews(".", sorted_businesses[-10:])
+    generate_cat_features(sorted_businesses)
+    print(construct_feature_diff_matrix(sorted_businesses[-100:]).shape)

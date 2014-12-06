@@ -32,9 +32,9 @@ class Business:
     def __str__(self):
         return "("+str(self.business_id)+","+str(self.review_count)+", opened on: "+str(self.open_date)+", closed on:"+str(self.closing_date)+", price: "+str(self.price_range)+", reviews: " + str(self.review_count) + ")"
 
-    def plot_moving_avg(self, fig):
+    def plot_moving_avg(self):
         num_days = len(self.moving_avg_ratings)
-        plt.figure(fig)
+        plt.figure()
         plt.plot(range(num_days), self.moving_avg_ratings)
         plt.axis([0, num_days, 0 , 5]);
         plt.show()

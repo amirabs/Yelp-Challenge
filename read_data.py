@@ -4,13 +4,19 @@ import numpy as np
 from numpy import *
 from datetime import datetime
 from sets import Set
+import matplotlib.pyplot as plt
 
 from classes import *
 
 # Global params
 base_date = datetime.strptime("2000-01-01",'%Y-%m-%d')
 closing_threshold = 365
-interval = 60 # number of days in moving average 
+interval = 120 # number of days in moving average 
+
+# Sigma^2 used for the gaussian filter
+sigma_sq = math.pow(interval / 5.0, 2)
+mid_interval = interval / 2.0
+gaussian_filter = map(lambda x: 1.0 / math.sqrt(2 * sigma_sq * math.pi) * math.exp(-math.pow(x - mid_interval, 2) / (2 * sigma_sq)), range(interval))
 
 def load_reviews(path, businesses):
     reviews = dict()
@@ -49,13 +55,18 @@ def load_reviews(path, businesses):
                 if (not last_review) or (date > last_review):
                     last_review = date
 
-            for d in range(len(reviews_of_days)):
-                past_days = reviews_of_days[max(0, d - interval):d]
-                ratings_in_interval = reduce(lambda x, y: x + y, past_days, [])
-                if len(ratings_in_interval) > 0:
-                    moving_avg.append(average(ratings_in_interval))
-                else:
-                    moving_avg.append(0)
+            reviews_of_days_avg = map(lambda x: float(sum(x)) / len(x) if x != [] else 0, reviews_of_days)
+            moving_avg = np.convolve(reviews_of_days_avg, gaussian_filter)
+
+            # Old moving average code:
+            #
+            # for d in range(len(reviews_of_days)):
+            #    past_days = reviews_of_days[max(0, d - interval):d]
+            #    ratings_in_interval = reduce(lambda x, y: x + y, past_days, [])
+            #    if len(ratings_in_interval) > 0:
+            #        moving_avg.append(average(ratings_in_interval))
+            #    else:
+            #        moving_avg.append(0)
 
             business.open_date = first_review
             business.last_review = last_review
@@ -129,4 +140,4 @@ if __name__ == "__main__":
     businesses = load_businesses(".")
     sorted_businesses = sorted(businesses, key = lambda b: b.review_count)
     generate_cat_features(sorted_businesses)
-    print(construct_feature_diff_matrix(sorted_businesses[-10:]).shape)
+    load_reviews(".", sorted_businesses[-10:])

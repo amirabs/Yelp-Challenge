@@ -11,7 +11,7 @@ from classes import *
 # Global params
 base_date = datetime.strptime("2000-01-01",'%Y-%m-%d')
 closing_threshold = 365
-interval = 120 # number of days in moving average 
+interval = 60 # number of days in moving average 
 
 # Sigma^2 used for the gaussian filter
 sigma_sq = math.pow(interval / 5.0, 2)
@@ -97,8 +97,10 @@ def load_businesses(path):
             if 'Price Range' in business_attributes:
                 business_price_range = int(business_attributes['Price Range'])
 
-            businesses.append(Business(business_id, business['review_count'], business_categories, business['longitude'], business['latitude'], business_price_range, zip_code))
+            if "Restaurants" in business_categories:
+                businesses.append(Business(business_id, business['review_count'], business_categories, business['longitude'], business['latitude'], business_price_range, zip_code))
 
+    print "Number of businesses: " + str(len(businesses))
     return businesses
 
 def generate_cat_features(businesses):

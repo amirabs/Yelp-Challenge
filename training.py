@@ -36,8 +36,29 @@ def main3():
 	a=np.sqrt(a)/mean
 	print a
 
+def mysvm_3class():
+	corr_thresh=0.05;
+	corr_1d=load_file("corr_1d.txt")
+	ind_bin_0=np.where(corr_1d > corr_thresh)
+	ind_bin_1=np.where(corr_1d < -corr_thresh)
+	print ind_bin_0[0].shape
+	print ind_bin_1[0].shape
+	corr_1d_bin = np.zeros(len(corr_1d))
+	corr_1d_bin[ind_bin_0] = 1
+	corr_1d_bin[ind_bin_1] = 2
+	print corr_1d_bin
+	print corr_1d
+
+	feature_mat=load_file("feature_mat.txt")
+
+	print feature_mat.shape
+
+	clf = svm.SVC(kernel='linear', C=1)
+	a=cross_val_score(clf, feature_mat, corr_1d_bin, cv=5)
+	print a
+
 def mysvm():
-	corr_thresh=0.1;
+	corr_thresh=0.17;
 	corr_1d=load_file("corr_1d.txt")
 	ind=np.where(np.abs(corr_1d)>corr_thresh)
 	corr_1d_filtered=corr_1d[ind]

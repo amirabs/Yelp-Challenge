@@ -3,6 +3,8 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, make_scorer
 from sklearn.cross_validation import KFold, cross_val_score
 from sklearn.linear_model import Lasso
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import BernoulliNB
 from sklearn import svm
 from numpy import *
 from pylab import *
@@ -37,7 +39,7 @@ def main3():
 	print a
 
 def mysvm_3class():
-	corr_thresh=0.05;
+	corr_thresh=0.3;
 	corr_1d=load_file("corr_1d.txt")
 	ind_bin_0=np.where(corr_1d > corr_thresh)
 	ind_bin_1=np.where(corr_1d < -corr_thresh)
@@ -58,7 +60,56 @@ def mysvm_3class():
 	print a
 
 def mysvm():
-	corr_thresh=0.17;
+	corr_thresh=0.25;
+	corr_1d=load_file("corr_1d.txt")
+	ind=np.where(np.abs(corr_1d)>corr_thresh)
+	corr_1d_filtered=corr_1d[ind]
+	ind_bin=np.where(corr_1d_filtered > 0)
+	corr_1d_bin = np.zeros(len(corr_1d_filtered))
+	corr_1d_bin[ind_bin] = 1
+	print "positive corr:"
+	print ind_bin[0].shape
+	print corr_1d_bin
+	print corr_1d_filtered
+
+	feature_mat=load_file("feature_mat.txt")
+	feature_mat_filtered=feature_mat[ind]
+
+	print feature_mat_filtered.shape
+	#try remove the distances from the features
+	feature_mat_filtered2 = feature_mat_filtered[:,1:];
+	#standardize the feature 'distance' through operations in dum:
+	dum = feature_mat_filtered[:,0]
+	dum = 2 * dum / np.amax(dum)
+	dum = dum-1
+	feature_mat_filtered[:,0] = dum
+	clf = svm.SVC(kernel='rbf', C=1)
+	a=cross_val_score(clf, feature_mat_filtered, corr_1d_bin, cv=10)
+	print a
+
+def naiveb():
+	corr_thresh=0.1;
+	corr_1d=load_file("corr_1d.txt")
+	ind=np.where(np.abs(corr_1d)>corr_thresh)
+	corr_1d_filtered=corr_1d[ind]
+	ind_bin=np.where(corr_1d_filtered > 0)
+	corr_1d_bin = np.zeros(len(corr_1d_filtered))
+	corr_1d_bin[ind_bin] = 1
+	print corr_1d_bin
+	print corr_1d_filtered
+
+	feature_mat=load_file("feature_mat.txt")
+	feature_mat_filtered=feature_mat[ind]
+
+	print feature_mat_filtered.shape
+	print "naive bayes"
+	clf= BernoulliNB()
+	#feature_mat_filtered2 = feature_mat_filtered[:,1:];
+	a=cross_val_score(clf, feature_mat_filtered, corr_1d_bin, cv=10)
+	print a
+
+def logisreg():
+	corr_thresh=0.1;
 	corr_1d=load_file("corr_1d.txt")
 	ind=np.where(np.abs(corr_1d)>corr_thresh)
 	corr_1d_filtered=corr_1d[ind]
@@ -73,7 +124,7 @@ def mysvm():
 
 	print feature_mat_filtered.shape
 
-	clf = svm.SVC(kernel='rbf', C=1)
+	clf= LogisticRegression(penalty='l2', tol=0.01)
 	a=cross_val_score(clf, feature_mat_filtered, corr_1d_bin, cv=10)
 	print a
 

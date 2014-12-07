@@ -27,6 +27,7 @@ class Business:
         self.cat_features = None
         self.zip_code = zip_code
         self.moving_avg_ratings = []
+        self.reviews_of_days = []
         self.cluster_id = cluster_id
 
     def __str__(self):

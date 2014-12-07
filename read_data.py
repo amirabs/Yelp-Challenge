@@ -10,13 +10,14 @@ from classes import *
 
 # Global params
 base_date = datetime.strptime("2000-01-01",'%Y-%m-%d')
-closing_threshold = 365
-interval = 60 # number of days in moving average 
+closing_threshold = 16
+interval = 30 # number of days in moving average 
 
 # Sigma^2 used for the gaussian filter
-sigma_sq = math.pow(interval / 5.0, 2)
+sigma_sq = math.pow(interval / 1.0, 2)
 mid_interval = interval / 2.0
 gaussian_filter = map(lambda x: 1.0 / math.sqrt(2 * sigma_sq * math.pi) * math.exp(-math.pow(x - mid_interval, 2) / (2 * sigma_sq)), range(interval))
+gaussian_filter_norm = gaussian_filter / sum(gaussian_filter)
 
 def load_reviews(path, businesses):
     reviews = dict()
@@ -56,7 +57,13 @@ def load_reviews(path, businesses):
                     last_review = date
 
             reviews_of_days_avg = map(lambda x: float(sum(x)) / len(x) if x != [] else 0, reviews_of_days)
-            moving_avg = np.convolve(reviews_of_days_avg, gaussian_filter)
+
+            # This code interpolates the ratings
+            #
+            # for i in range(first_review, last_review):
+            #    if reviews_of_days_avg[i] == 0.0:
+            #        reviews_of_days_avg[i] = reviews_of_days_avg[i - 1]
+            moving_avg = np.convolve(reviews_of_days_avg, gaussian_filter_norm)
 
             # Old moving average code:
             #
@@ -68,11 +75,13 @@ def load_reviews(path, businesses):
             #    else:
             #        moving_avg.append(0)
 
+            # Update the business
             business.open_date = first_review
             business.last_review = last_review
             if (last_review < last_review_in_dataset - closing_threshold):
                 business.closing_date = last_review
             business.moving_avg_ratings = moving_avg
+            business.reviews_of_days = reviews_of_days
 
     print "Last review in dataset: " + str(last_review_in_dataset)
 

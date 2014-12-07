@@ -8,15 +8,70 @@ from classes import *
 from read_data import *
 from clustering import *
 
+def nested_list_to_xy_mat(nested_xs):
+    xys = []
+    for i, xs in enumerate(nested_xs):
+        for y in xs:
+            xys.append([i, y])
+
+    return np.array(xys)
+
+def delta_trend(x, y):
+    window_size = 120
+
+    # Make sure that x is the older business (swap businesses if necessary)
+    if y.open_date < x.open_date:
+        x, y = y, x
+
+    start = max(0, y.open_date - window_size)
+    end = min(len(x.reviews_of_days), y.open_date + window_size)
+
+    ratings_before = x.reviews_of_days[y.open_date - window_size:y.open_date]
+    ratings_after = x.reviews_of_days[y.open_date:y.open_date + window_size]
+
+    ratings_before_xy = nested_list_to_xy_mat(ratings_before)
+    ratings_after_xy = nested_list_to_xy_mat(ratings_after)
+
+    delta = 0
+    if len(ratings_before_xy) >= 5 and len(ratings_after_xy) >= 5:
+        before_x = window_size - ratings_before_xy[:, 0]
+        before_y = ratings_before_xy[:, 1]
+        after_x = ratings_after_xy[:, 0]
+        after_y = ratings_after_xy[:, 1]
+
+        y = np.concatenate([before_y, after_y])
+        A = np.zeros([len(y), 3])
+        A[:, 2] = 1
+        A[0:len(before_x), 0] = before_x
+        A[len(before_x):, 1] = after_x
+
+        theta = np.linalg.lstsq(A, y)[0]
+
+        deg_before = math.degrees(math.atan(theta[0]))
+        deg_after = math.degrees(math.atan(theta[1]))
+        delta = deg_after - deg_before
+
+    return delta
+
+def delta_trend_vec(businesses):
+    print "Generating delta trend vector"
+
+    result = []
+    for i in range(len(businesses)):
+        for j in range(i):
+            result.append(delta_trend(businesses[i], businesses[j]))
+    return result
+
 def correlation_bus(x,y):
-    start = max(x.open_date+60,y.open_date+60)
-    end = min(x.last_review-60,y.last_review-60)
+    start = max(x.open_date + 15, y.open_date + 15)
+    end = min(len(x.moving_avg_ratings), start + 90)
 
     if(end <= start):
         return 0
 
     x_se = x.moving_avg_ratings[start:end]
     y_se = y.moving_avg_ratings[start:end]
+
     x_avg = np.average(x_se)
     y_avg = np.average(y_se)
 
@@ -25,9 +80,10 @@ def correlation_bus(x,y):
 
     length = end - start
     E_XY = np.dot(a, b) / length
-    E_XX = np.dot(a, a) / length
-    E_YY = np.dot(b, b) / length
-    return E_XY / math.sqrt(E_XX * E_YY)
+    s_x = math.sqrt(np.dot(a, a) / length)
+    s_y = math.sqrt(np.dot(b, b) / length)
+    corr = E_XY / (s_x * s_y) if s_x * s_y > 0 else 0
+    return corr
 
 def correlation_mat(businesses):
 	n=len(businesses)
@@ -74,8 +130,12 @@ def pair_cor():
 	clus = Cluster(businesses_list)
 	cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clus.businesses)
 	load_reviews("./dataset",cluster_businesses)
-	corr=correlation_mat(cluster_businesses)
-	to_file(corr,len(cluster_businesses))
+	# corr=correlation_mat(cluster_businesses)
+	# to_file(corr,len(cluster_businesses))
+
+	delta_vec = delta_trend_vec(cluster_businesses)
+	np.savetxt("delta_1d.txt", delta_vec)
+
 	generate_cat_features(cluster_businesses)
 	features = construct_feature_diff_matrix(cluster_businesses)
 	print features.shape

@@ -217,13 +217,52 @@ def delta_svm_3class():
     ind_val_0 = np.where(np.abs(delta_1d_filtered) > delta_thresh)
     ind_val_1 = np.where(np.abs(delta_1d_filtered) <= delta_thresh)
 
+    ind_val_1 = np.where(np.abs(delta_1d_filtered) > delta_thresh)
+
+    print "total:" + str(len(delta_1d_filtered))
+    print "significant:" + str(ind_val_1[0].shape)
+
     delta_1d_bin = np.zeros(len(delta_1d_filtered))
     delta_1d_bin[ind_val_0] = -1
     delta_1d_bin[ind_val_1] = 1
 
-    clf = svm.SVC(kernel='rbf', C = 1)
+    clf = svm.SVC(kernel='linear', C = 1)
     a=cross_val_score(clf, feature_mat_filtered, delta_1d_bin, cv=10)
     print a
 
+def delta_svm_posvsneg():
+    delta_thresh = 0.1
+    dist_thresh = 1
+
+    delta_1d = load_file("delta_1d.txt")
+    feature_mat = load_file("feature_mat.txt")
+
+    close_vals = np.where(feature_mat[:, 0] < dist_thresh)
+    delta_1d_filtered = delta_1d[close_vals]
+    feature_mat_filtered = feature_mat[close_vals]
+
+    plt.figure()
+    plt.plot(np.sqrt(feature_mat_filtered[:, 0]), delta_1d_filtered, 'ro')
+    plt.axis([0, 20, min(delta_1d_filtered), max(delta_1d_filtered)])
+    plt.show()
+    #keep only significant indices
+    ind_val_1=np.where( (delta_1d_filtered>0.4) | (delta_1d_filtered<-0.4) )
+    delta_1d_filtered2 = delta_1d_filtered[ind_val_1]
+    #remove the corresponding entries in feature_mat_filtered
+    feature_mat_filtered2 = feature_mat_filtered[ind_val_1]
+    #do the labeling in a new vector delta_1d_bin
+    indpos = np.where( (delta_1d_filtered2>0) )
+    delta_1d_bin = np.zeros(len(delta_1d_filtered2))
+    delta_1d_bin[indpos] = 1
+
+    print "total:" + str(len(delta_1d_filtered2))
+    print "positive:" + str(len(indpos[0]))
+    
+
+    clf = svm.SVC(kernel='rbf', C = 1)
+    a=cross_val_score(clf, feature_mat_filtered2, delta_1d_bin, cv=10)
+    print a
+
+
 if __name__ == "__main__":
-    delta_svm_3class()
+    delta_svm_posvsneg()

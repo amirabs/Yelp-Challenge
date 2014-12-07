@@ -279,7 +279,7 @@ def mean_svm_sigvsnot():
 
 def delta_svm_posvsneg():
     delta_thresh = 0.1
-    dist_thresh = 1
+    dist_thresh = 0.01
 
     delta_1d = load_file("delta_1d.txt")
     feature_mat = load_file("feature_mat.txt")
@@ -299,7 +299,7 @@ def delta_svm_posvsneg():
     #remove the corresponding entries in feature_mat_filtered
     feature_mat_filtered2 = feature_mat_filtered[ind_val_1]
     #do the labeling in a new vector delta_1d_bin
-    indpos = np.where( (abs(delta_1d_filtered2)>0.35) )
+    indpos = np.where( (delta_1d_filtered2>0) )
     delta_1d_bin = np.zeros(len(delta_1d_filtered2))
     delta_1d_bin[indpos] = 1
 
@@ -308,11 +308,12 @@ def delta_svm_posvsneg():
 
 
     clf = svm.SVC(kernel='rbf', C = 1)
+    
     a=cross_val_score(clf, feature_mat_filtered2, delta_1d_bin, cv=10)
     print a
 
 
 if __name__ == "__main__":
-    mean_svm_sigvsnot()
+    delta_svm_posvsneg()
     # plot_dist_vs_delta()
     # delta_svm_posvsneg()

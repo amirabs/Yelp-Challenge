@@ -196,7 +196,7 @@ def plot_delta_hist():
     plt.show()
 
 def delta_svm_3class():
-    delta_thresh = 0.1
+    delta_thresh = 0.000000001
     dist_thresh = 1
 
     delta_1d = load_file("delta_1d.txt")
@@ -246,17 +246,19 @@ def delta_svm_posvsneg():
     plt.axis([0, 20, min(delta_1d_filtered), max(delta_1d_filtered)])
     plt.show()
     #keep only significant indices
-    ind_val_1=np.where( (delta_1d_filtered>0.4) | (delta_1d_filtered<-0.4) )
+    sig_thresh = 0.000000001
+    ind_val_1=np.where( (delta_1d_filtered>sig_thresh) | (delta_1d_filtered<-sig_thresh) )
     delta_1d_filtered2 = delta_1d_filtered[ind_val_1]
     #remove the corresponding entries in feature_mat_filtered
     feature_mat_filtered2 = feature_mat_filtered[ind_val_1]
     #do the labeling in a new vector delta_1d_bin
-    indpos = np.where( (delta_1d_filtered2>0) )
+    indpos = np.where( (abs(delta_1d_filtered2)>0.35) )
     delta_1d_bin = np.zeros(len(delta_1d_filtered2))
     delta_1d_bin[indpos] = 1
 
     print "total:" + str(len(delta_1d_filtered2))
     print "positive:" + str(len(indpos[0]))
+
     
 
     clf = svm.SVC(kernel='rbf', C = 1)

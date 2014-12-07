@@ -217,7 +217,7 @@ def delta_svm_3class():
     delta_1d_bin = np.zeros(len(delta_1d_filtered))
     delta_1d_bin[ind_val_1] = 1
 
-    clf = svm.SVC(kernel='linear', C = 1)
+    clf = svm.SVC(kernel='rbf', C = 1)
     a=cross_val_score(clf, feature_mat_filtered, delta_1d_bin, cv=10)
     print a
 

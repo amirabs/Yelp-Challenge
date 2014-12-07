@@ -199,9 +199,9 @@ def sampled_data(features, delta):
     buckets = np.arange(0, 1, 0.01)
     vals_in_buckets = [[] for x in range(len(buckets))]
 
-    for i in range(len(delta_1d)):
+    for i in range(len(delta)):
         bucket = 0
-        v = feature_mat[i, 0]
+        v = features[i, 0]
         while (bucket < len(buckets) - 1) and (v > buckets[bucket]):
             bucket += 1
         vals_in_buckets[bucket].append(i)
@@ -214,8 +214,8 @@ def sampled_data(features, delta):
             for j in range(40):
                 samples.append(vals[random.randint(0, len(vals) - 1)])
 
-    sampled_delta_1d = delta_1d[samples]
-    sampled_feature_mat = feature_mat[samples, :]
+    sampled_delta_1d = delta[samples]
+    sampled_feature_mat = features[samples, :]
     return sampled_feature_mat, sampled_delta_1d
 
 def plot_dist_vs_mean():
@@ -316,10 +316,13 @@ def mean_svm_sigvsnot():
 
 def delta_svm_posvsneg():
     delta_thresh = 0.1
-    dist_thresh = 0.01
+    dist_thresh = 1
 
-    delta_1d = load_file("delta_1d.txt")
+    delta_1d = load_file("mean_1d.txt")
     feature_mat = load_file("feature_mat.txt")
+
+    feature_mat, delta_1d = filter_data(feature_mat, delta_1d)
+    feature_mat, delta_1d = sampled_data(feature_mat, delta_1d)
 
     close_vals = np.where(feature_mat[:, 0] < dist_thresh)
     delta_1d_filtered = delta_1d[close_vals]
@@ -330,14 +333,13 @@ def delta_svm_posvsneg():
     plt.axis([0, 20, min(delta_1d_filtered), max(delta_1d_filtered)])
     plt.show()
     #keep only significant indices
-    sig_thresh = 0.000000001
-    ind_val_1=np.where( (delta_1d_filtered>sig_thresh) | (delta_1d_filtered<-sig_thresh) )
-    delta_1d_filtered2 = delta_1d_filtered[ind_val_1]
+    delta_1d_filtered2 = delta_1d_filtered
     #remove the corresponding entries in feature_mat_filtered
-    feature_mat_filtered2 = feature_mat_filtered[ind_val_1]
+    feature_mat_filtered2 = preprocessing.scale(feature_mat_filtered)
     #do the labeling in a new vector delta_1d_bin
-    indpos = np.where( (delta_1d_filtered2>0) )
+    indpos = np.where( np.abs(delta_1d_filtered2) > 0.2)
     delta_1d_bin = np.zeros(len(delta_1d_filtered2))
+    delta_1d_bin[:] = -1
     delta_1d_bin[indpos] = 1
 
     print "total:" + str(len(delta_1d_filtered2))
@@ -345,10 +347,9 @@ def delta_svm_posvsneg():
 
 
     clf = svm.SVC(kernel='rbf', C = 1)
-    
-    a=cross_val_score(clf, feature_mat_filtered2, delta_1d_bin, cv=10)
+    a=cross_val_score(clf, feature_mat_filtered2, delta_1d_bin, cv=5)
     print a
-
+    print "average cross validation score: " + str(np.average(a))
 
 if __name__ == "__main__":
     delta_svm_posvsneg()

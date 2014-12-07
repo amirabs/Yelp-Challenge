@@ -42,6 +42,6 @@ class Business:
 
     def diff_features(self, other):
         diff_features = []
-        geo_dist = math.pow(self.longitude - other.longitude, 2) + math.pow(self.latitude - other.latitude, 2)
+        geo_dist = math.sqrt(math.pow(self.longitude - other.longitude, 2) + math.pow(self.latitude - other.latitude, 2))
         diff_features.append(geo_dist)
         return diff_features + map(lambda xs: -1 if xs[0] == xs[1] else 1, zip(self.cat_features, other.cat_features))

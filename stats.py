@@ -17,7 +17,7 @@ def nested_list_to_xy_mat(nested_xs):
     return np.array(xys)
 
 def delta_trend(x, y):
-    window_size = 120
+    window_size = 60
 
     # Make sure that x is the older business (swap businesses if necessary)
     if y.open_date < x.open_date:
@@ -33,7 +33,7 @@ def delta_trend(x, y):
     ratings_after_xy = nested_list_to_xy_mat(ratings_after)
 
     delta = 0
-    if len(ratings_before_xy) >= 5 and len(ratings_after_xy) >= 5:
+    if len(ratings_before_xy) >= 10 and len(ratings_after_xy) >= 10:
         before_x = -window_size + ratings_before_xy[:, 0]
         before_y = ratings_before_xy[:, 1]
         after_x = ratings_after_xy[:, 0]
@@ -59,6 +59,44 @@ def delta_trend(x, y):
         delta = deg_after - deg_before
 
     return delta
+
+def delta_trend_vec(businesses):
+    print "Generating delta trend vector"
+
+    result = []
+    for i in range(len(businesses)):
+        for j in range(i):
+            result.append(delta_trend(businesses[i], businesses[j]))
+    return result
+
+def delta_mean(x, y):
+    window_size = 60
+
+    # Make sure that x is the older business (swap businesses if necessary)
+    if y.open_date < x.open_date:
+        x, y = y, x
+
+    start = max(0, y.open_date - window_size)
+    end = min(len(x.reviews_of_days), y.open_date + window_size)
+    ratings_before = x.reviews_of_days[y.open_date - window_size:y.open_date]
+    ratings_after = x.reviews_of_days[y.open_date:y.open_date + window_size]
+    ratings_before_xy = nested_list_to_xy_mat(ratings_before)
+    ratings_after_xy = nested_list_to_xy_mat(ratings_after)
+
+    delta = 0
+    if len(ratings_before_xy) >= 10 and len(ratings_after_xy) >= 10:
+        delta = np.mean(ratings_after_xy[:, 1]) - np.mean(ratings_before_xy[:, 1])
+
+    return delta
+
+def delta_mean_vec(businesses):
+    print "Generating delta mean vector"
+
+    result = []
+    for i in range(len(businesses)):
+        for j in range(i):
+            result.append(delta_mean(businesses[i], businesses[j]))
+    return result
 
 def delta_trend_vec(businesses):
     print "Generating delta trend vector"
@@ -142,6 +180,9 @@ def pair_cor():
 
 	delta_vec = delta_trend_vec(cluster_businesses)
 	np.savetxt("delta_1d.txt", delta_vec)
+
+	delta_mean = delta_mean_vec(cluster_businesses)
+	np.savetxt("mean_1d.txt", delta_mean)
 
 	generate_cat_features(cluster_businesses)
 	features = construct_feature_diff_matrix(cluster_businesses)

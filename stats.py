@@ -70,7 +70,7 @@ def delta_trend_vec(businesses):
     return result
 
 def delta_mean(x, y):
-    window_size = 60
+    window_size = 90
 
     # Make sure that x is the older business (swap businesses if necessary)
     if y.open_date < x.open_date:

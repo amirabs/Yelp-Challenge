@@ -9,6 +9,7 @@ from sklearn import preprocessing
 from sklearn import svm
 from numpy import *
 from pylab import *
+import random
 
 # Classes Import
 from classes import *
@@ -190,18 +191,54 @@ def plot_dist_vs_delta():
     plt.axis([-1, 1, min(delta_1d), max(delta_1d)])
     plt.show()
 
+def filter_data(features, delta):
+    inds = np.where(delta != 0.0)
+    return features[inds], delta[inds]
+
+def sampled_data(features, delta):
+    buckets = np.arange(0, 1, 0.01)
+    vals_in_buckets = [[] for x in range(len(buckets))]
+
+    for i in range(len(delta_1d)):
+        bucket = 0
+        v = feature_mat[i, 0]
+        while (bucket < len(buckets) - 1) and (v > buckets[bucket]):
+            bucket += 1
+        vals_in_buckets[bucket].append(i)
+
+    samples_per_bucket = 40
+    samples = []
+    for i in range(len(buckets)):
+        vals = vals_in_buckets[i]
+        if len(vals) > 40:
+            for j in range(40):
+                samples.append(vals[random.randint(0, len(vals) - 1)])
+
+    sampled_delta_1d = delta_1d[samples]
+    sampled_feature_mat = feature_mat[samples, :]
+    return sampled_feature_mat, sampled_delta_1d
+
 def plot_dist_vs_mean():
     delta_1d = load_file("mean_1d.txt")
     feature_mat = load_file("feature_mat.txt")
 
+    feature_mat, delta_1d = filter_data(feature_mat, delta_1d)
+    sampled_feature_mat, sampled_delta_1d = sampled_data(feature_mat, delta_1d)
+
     h = np.histogram(delta_1d, bins = np.arange(0, 1, 0.01), density = True)
+
     plt.figure()
-    plt.plot(h[0], h[1], 'ro')
+    plt.plot(h[0], h[1][:-1], 'ro')
+    plt.show()
+
+    plt.figure()
+    plt.plot(sampled_feature_mat[:, 0], sampled_delta_1d, 'ro')
+    plt.axis([0, 0.5, min(delta_1d), max(delta_1d)])
     plt.show()
 
     plt.figure()
     plt.plot(feature_mat[:, 0], delta_1d, 'ro')
-    plt.axis([0, 1, min(delta_1d), max(delta_1d)])
+    plt.axis([0, 0.5, min(delta_1d), max(delta_1d)])
     plt.show()
 
 def plot_delta_hist():

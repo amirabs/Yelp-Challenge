@@ -5,6 +5,7 @@ from sklearn.cross_validation import KFold, cross_val_score
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import BernoulliNB
+from sklearn import preprocessing
 from sklearn import svm
 from numpy import *
 from pylab import *
@@ -177,7 +178,7 @@ def plot_dist_vs_corr():
     corr_1d = load_file("corr_1d.txt")
     feature_mat = load_file("feature_mat.txt")
     plt.figure()
-    plt.plot(np.sqrt(feature_mat[:, 0]), corr_1d, 'ro')
+    plt.plot(feature_mat[:, 0], corr_1d, 'ro')
     plt.axis([0, 0.2, min(corr_1d), max(corr_1d)])
     plt.show()
 
@@ -185,8 +186,22 @@ def plot_dist_vs_delta():
     delta_1d = load_file("delta_1d.txt")
     feature_mat = load_file("feature_mat.txt")
     plt.figure()
-    plt.plot(np.sqrt(feature_mat[:, 0]), delta_1d, 'ro')
-    plt.axis([0, 20, min(delta_1d), max(delta_1d)])
+    plt.plot(feature_mat[:, 0], delta_1d, 'ro')
+    plt.axis([-1, 1, min(delta_1d), max(delta_1d)])
+    plt.show()
+
+def plot_dist_vs_mean():
+    delta_1d = load_file("mean_1d.txt")
+    feature_mat = load_file("feature_mat.txt")
+
+    h = np.histogram(delta_1d, bins = np.arange(0, 1, 0.01), density = True)
+    plt.figure()
+    plt.plot(h[0], h[1], 'ro')
+    plt.show()
+
+    plt.figure()
+    plt.plot(feature_mat[:, 0], delta_1d, 'ro')
+    plt.axis([0, 1, min(delta_1d), max(delta_1d)])
     plt.show()
 
 def plot_delta_hist():
@@ -259,7 +274,6 @@ def delta_svm_posvsneg():
     print "total:" + str(len(delta_1d_filtered2))
     print "positive:" + str(len(indpos[0]))
 
-    
 
     clf = svm.SVC(kernel='rbf', C = 1)
     a=cross_val_score(clf, feature_mat_filtered2, delta_1d_bin, cv=10)
@@ -267,4 +281,6 @@ def delta_svm_posvsneg():
 
 
 if __name__ == "__main__":
-    delta_svm_posvsneg()
+    plot_dist_vs_mean()
+    # plot_dist_vs_delta()
+    # delta_svm_posvsneg()

@@ -229,10 +229,8 @@ def delta_svm_3class():
     feature_mat_filtered = feature_mat_filtered / np.tile(np.max(np.abs(feature_mat_filtered), 0), [feature_mat_filtered.shape[0], 1])
     print feature_mat_filtered
 
-    ind_val_0 = np.where(np.abs(delta_1d_filtered) > delta_thresh)
-    ind_val_1 = np.where(np.abs(delta_1d_filtered) <= delta_thresh)
-
-    ind_val_1 = np.where(np.abs(delta_1d_filtered) > delta_thresh)
+    ind_val_0 = np.where(np.abs(delta_1d_filtered) < delta_thresh)
+    ind_val_1 = np.where(np.abs(delta_1d_filtered) >= delta_thresh)
 
     print "total:" + str(len(delta_1d_filtered))
     print "significant:" + str(ind_val_1[0].shape)
@@ -243,6 +241,40 @@ def delta_svm_3class():
 
     clf = svm.SVC(kernel='rbf', C = 1)
     a=cross_val_score(clf, feature_mat_filtered, delta_1d_bin, cv=10)
+    print a
+
+def mean_svm_sigvsnot():
+    mean_thresh = 0.000000001
+    dist_thresh = 1
+
+    mean_1d = load_file("mean_1d.txt")
+    feature_mat = load_file("feature_mat.txt")
+
+    close_vals = np.where(feature_mat[:, 0] < dist_thresh)
+    mean_1d_filtered = mean_1d[close_vals]
+    distances = feature_mat.shape[1] + np.sum(feature_mat[:, 1:], 1)
+    new_feature_mat = np.zeros([feature_mat.shape[0], 2])
+    new_feature_mat[:, 0] = feature_mat[:, 0]
+    new_feature_mat[:, 1] = distances
+    feature_mat_filtered = new_feature_mat[close_vals]
+
+    feature_mat_filtered = feature_mat_filtered - np.tile(np.mean(feature_mat_filtered, 0), [feature_mat_filtered.shape[0], 1])
+    feature_mat_filtered = feature_mat_filtered / np.tile(np.max(np.abs(feature_mat_filtered), 0), [feature_mat_filtered.shape[0], 1])
+    print feature_mat_filtered
+
+    ind_val_0 = np.where(np.abs(mean_1d_filtered) < mean_thresh)
+    ind_val_1 = np.where(np.abs(mean_1d_filtered) >= mean_thresh)
+
+
+    print "total:" + str(len(mean_1d_filtered))
+    print "significant:" + str(ind_val_1[0].shape)
+
+    mean_1d_bin = np.zeros(len(mean_1d_filtered))
+    mean_1d_bin[ind_val_0] = -1
+    mean_1d_bin[ind_val_1] = 1
+
+    clf = svm.SVC(kernel='rbf', C = 1)
+    a=cross_val_score(clf, feature_mat_filtered, mean_1d_bin, cv=10)
     print a
 
 def delta_svm_posvsneg():
@@ -281,6 +313,6 @@ def delta_svm_posvsneg():
 
 
 if __name__ == "__main__":
-    plot_dist_vs_mean()
+    mean_svm_sigvsnot()
     # plot_dist_vs_delta()
     # delta_svm_posvsneg()

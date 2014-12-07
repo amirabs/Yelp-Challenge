@@ -34,7 +34,7 @@ def delta_trend(x, y):
 
     delta = 0
     if len(ratings_before_xy) >= 5 and len(ratings_after_xy) >= 5:
-        before_x = window_size - ratings_before_xy[:, 0]
+        before_x = -window_size + ratings_before_xy[:, 0]
         before_y = ratings_before_xy[:, 1]
         after_x = ratings_after_xy[:, 0]
         after_y = ratings_after_xy[:, 1]
@@ -46,6 +46,13 @@ def delta_trend(x, y):
         A[len(before_x):, 1] = after_x
 
         theta = np.linalg.lstsq(A, y)[0]
+
+        xs = np.concatenate([before_x, after_x])
+
+        # plt.figure()
+        # plt.plot(xs, y, 'ro')
+        # plt.plot(xs, np.sum(A * theta, 1))
+        # plt.show()
 
         deg_before = math.degrees(math.atan(theta[0]))
         deg_after = math.degrees(math.atan(theta[1]))

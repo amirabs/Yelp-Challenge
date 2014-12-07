@@ -53,12 +53,17 @@ def cluster_business(businesses):
 	# print X
 
 	k_means = cluster.MiniBatchKMeans(n_clusters=NClusters)
-	# dbscan = cluster.DBSCAN(eps=.2)
+	dbscan = cluster.DBSCAN(eps=.03)
+	affinity_propagation = cluster.AffinityPropagation(damping=.9, preference=-200)
+	spectral = cluster.SpectralClustering(n_clusters=2,eigen_solver='arpack',affinity="nearest_neighbors")
+
 
 	for name, algorithm in [
 							('MiniBatchKMeans', k_means),
-							# ('DBSCAN', dbscan)
-						   ]:
+							('DBSCAN', dbscan),
+							# ('SpectralClustering', spectral)
+							# ('AffinityPropagation', affinity_propagation),
+							]:
 		# predict cluster memberships
 		t0 = time.time()
 		algorithm.fit(X)
@@ -69,18 +74,22 @@ def cluster_business(businesses):
 			y_pred = algorithm.predict(X)
 
 		# plot
-		# plt.subplot(4, 7, plot_num)
-		plt.title(name, size=18)
+		ax=plt.subplot(1, 2, plot_num)
+		plt.title(name, size=16)
 		plt.scatter(X[:, 0], X[:, 1], color=colors[y_pred].tolist(), s=10)
 
 		if hasattr(algorithm, 'cluster_centers_'):
 			centers = algorithm.cluster_centers_
 			center_colors = colors[:len(centers)]
 			plt.scatter(centers[:, 0], centers[:, 1], s=100, c=center_colors)
+		ax.spines["top"].set_visible(False)
+		ax.spines["bottom"].set_visible(False)
+		ax.spines["right"].set_visible(False)
+		ax.spines["left"].set_visible(False)
 		plt.xticks(())
 		plt.yticks(())
 		plot_num += 1
-	# plt.show()
+	plt.show()
 
 
 	clusters=[]

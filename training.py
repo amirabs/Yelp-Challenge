@@ -60,13 +60,14 @@ def mysvm_3class():
 	print a
 
 def mysvm():
-	corr_thresh=0.25;
+	corr_thresh=0.1;
 	corr_1d=load_file("corr_1d.txt")
-	ind=np.where(np.abs(corr_1d)>corr_thresh)
+	ind=np.where( (corr_1d>0.65) | (corr_1d<0) )
 	corr_1d_filtered=corr_1d[ind]
 	ind_bin=np.where(corr_1d_filtered > 0)
 	corr_1d_bin = np.zeros(len(corr_1d_filtered))
 	corr_1d_bin[ind_bin] = 1
+	print ind[0].shape
 	print "positive corr:"
 	print ind_bin[0].shape
 	print corr_1d_bin
@@ -77,15 +78,45 @@ def mysvm():
 
 	print feature_mat_filtered.shape
 	#try remove the distances from the features
-	feature_mat_filtered2 = feature_mat_filtered[:,1:];
+	feature_mat_filtered2 = feature_mat_filtered[:,0:];
 	#standardize the feature 'distance' through operations in dum:
 	dum = feature_mat_filtered[:,0]
 	dum = 2 * dum / np.amax(dum)
 	dum = dum-1
 	feature_mat_filtered[:,0] = dum
-	clf = svm.SVC(kernel='rbf', C=1)
+	clf = svm.SVC(kernel='poly', C=1)
+	a=cross_val_score(clf, feature_mat_filtered2, corr_1d_bin, cv=15)
+	print a
+	print "average cross validation error: " + str(np.average(a))
+
+def svm_asymthresh():
+	corr_thresh=0.36;
+	corr_1d=load_file("corr_1d.txt")
+	ind=np.where(corr_1d>corr_thresh)
+	corr_1d_bin = np.zeros(len(corr_1d))
+	corr_1d_bin[ind] = 1
+
+	print "high positive corr:"
+	print len(ind[0])
+	print corr_1d_bin
+
+
+	feature_mat=load_file("feature_mat.txt")
+
+	
+	feature_mat_filtered = feature_mat[:,0:];
+	print feature_mat_filtered.shape
+	#try remove the distances from the features
+	#standardize the feature 'distance' through operations in dum:
+	dum = feature_mat_filtered[:,0]
+	dum = 2 * dum / np.amax(dum)
+	dum = dum-1
+	feature_mat_filtered[:,0] = dum
+	clf = svm.SVC(kernel='linear', C=1)
 	a=cross_val_score(clf, feature_mat_filtered, corr_1d_bin, cv=10)
 	print a
+	print "average cross validation error: " + str(np.average(a))
+
 
 def naiveb():
 	corr_thresh=0.1;

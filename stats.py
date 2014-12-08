@@ -193,13 +193,33 @@ def gen_trend_vec(businesses, window_size):
 
 def correlation_bus(x,y):
     start = max(x.open_date + 15, y.open_date + 15)
-    end = min(len(x.moving_avg_ratings), start + 90)
+    end = min(len(x.moving_avg_ratings), start + 120)
 
     if(end <= start):
         return 0
 
     x_se = x.moving_avg_ratings[start:end]
     y_se = y.moving_avg_ratings[start:end]
+    xs = range(start, end)
+
+    # plt.figure(figsize=(30, 9))
+    # ax = subplot(111)
+    # ax.spines["top"].set_visible(False)
+    # ax.spines["bottom"].set_visible(False)
+    # ax.spines["right"].set_visible(False)
+    # ax.spines["left"].set_visible(False)
+    # ax.get_xaxis().tick_bottom()
+    # ax.get_yaxis().tick_left()
+    # plt.xlabel("Day", fontsize=30)
+    # plt.ylabel("Rating", fontsize=30)
+    # plt.plot(xs, x_se, lw=5, color=tableau20[3])
+    # plt.plot(xs, y_se, lw=5, color=tableau20[0])
+    # xticks(fontsize=24)
+    # yticks(fontsize=24)
+    # xlim(start, end + 1)
+    # ylim(0,5.5)
+    # plt.savefig("corr.pdf")
+    # plt.show()
 
     x_avg = np.average(x_se)
     y_avg = np.average(y_se)
@@ -259,8 +279,9 @@ def pair_cor():
 	clus = Cluster(businesses_list)
 	cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clus.businesses)
 	load_reviews("./dataset",cluster_businesses)
-	# corr=correlation_mat(cluster_businesses)
-	# to_file(corr,len(cluster_businesses))
+
+	corr=correlation_mat(cluster_businesses)
+	to_file(corr,len(cluster_businesses))
 
         # Plot moving average for business with most ratings
 	# sorted(cluster_businesses, key=(lambda b: b.review_count))[-1].plot_moving_avg()

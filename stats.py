@@ -278,6 +278,7 @@ def pair_cor():
 			clus=c
 	# clus = Cluster(businesses_list)
 	cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clus.businesses)
+	print len(cluster_businesses)
 	load_reviews("./dataset",cluster_businesses)
 
 	corr=correlation_mat(cluster_businesses)

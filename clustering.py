@@ -60,7 +60,7 @@ def cluster_business(businesses):
 
 	for name, algorithm in [
 							('MiniBatchKMeans', k_means),
-							('DBSCAN', dbscan),
+							# ('DBSCAN', dbscan),
 							# ('SpectralClustering', spectral)
 							# ('AffinityPropagation', affinity_propagation),
 							]:

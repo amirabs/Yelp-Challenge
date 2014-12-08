@@ -62,5 +62,7 @@ class Business:
         diff_features = []
         geo_dist = math.sqrt(math.pow(self.longitude - other.longitude, 2) + math.pow(self.latitude - other.latitude, 2))
         diff_features.append(geo_dist)
-        # return diff_features + map(lambda xs: -1 if xs[0] == xs[1] else 1, zip(self.cat_features, other.cat_features))
-        return diff_features + map(lambda xs: xs[0] + xs[1], zip(self.cat_features, other.cat_features))
+        diff_features.append(math.fabs(self.price_range - other.price_range))
+        diff_features.append(math.fabs(self.open_date - other.open_date))
+        return diff_features + map(lambda xs: -1 if xs[0] == xs[1] else 1, zip(self.cat_features, other.cat_features))
+        # return diff_features + map(lambda xs: xs[0] + xs[1], zip(self.cat_features, other.cat_features))

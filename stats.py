@@ -193,7 +193,7 @@ def gen_trend_vec(businesses, window_size):
 
 def correlation_bus(x,y):
     start = max(x.open_date + 15, y.open_date + 15)
-    end = min(len(x.moving_avg_ratings), start + 120)
+    end = min(len(x.moving_avg_ratings), start + 700)
 
     if(end <= start):
         return 0

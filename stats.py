@@ -273,10 +273,10 @@ def pair_cor():
 	businesses_list=load_businesses("./dataset")
 	businesses_list.sort(key=operator.attrgetter('business_id'));
 	clusters=cluster_business(businesses_list)
-	#for c in clusters:
-	#	if(len(c.businesses)>3000):
-	#		clus=c
-	clus = Cluster(businesses_list)
+	for c in clusters:
+		if(len(c.businesses)>3000):
+			clus=c
+	# clus = Cluster(businesses_list)
 	cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clus.businesses)
 	load_reviews("./dataset",cluster_businesses)
 

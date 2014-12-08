@@ -106,8 +106,9 @@ def load_businesses(path):
             if 'Price Range' in business_attributes:
                 business_price_range = int(business_attributes['Price Range'])
 
-            if "Restaurants" in business_categories:
-                businesses.append(Business(business_id, business['review_count'], business_categories, business['longitude'], business['latitude'], business_price_range, zip_code))
+            #if "Restaurants" in business_categories:
+            #    businesses.append(Business(business_id, business['review_count'], business_categories, business['longitude'], business['latitude'], business_price_range, zip_code))
+            businesses.append(Business(business_id, business['review_count'], business_categories, business['longitude'], business['latitude'], business_price_range, zip_code))
 
     print "Number of businesses: " + str(len(businesses))
     return businesses

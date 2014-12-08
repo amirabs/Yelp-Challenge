@@ -60,9 +60,9 @@ def load_reviews(path, businesses):
 
             # This code interpolates the ratings
             #
-            # for i in range(first_review, last_review):
-            #    if reviews_of_days_avg[i] == 0.0:
-            #        reviews_of_days_avg[i] = reviews_of_days_avg[i - 1]
+            for i in range(first_review, last_review):
+                if reviews_of_days_avg[i] == 0.0:
+                    reviews_of_days_avg[i] = reviews_of_days_avg[i - 1]
             moving_avg = np.convolve(reviews_of_days_avg, gaussian_filter_norm)
 
             # Old moving average code:

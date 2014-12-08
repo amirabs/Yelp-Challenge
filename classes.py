@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import math
 from numpy import *
+from common import *
 
 class Cluster:
     def __init__(self, businesses):
@@ -34,10 +35,27 @@ class Business:
         return "("+str(self.business_id)+","+str(self.review_count)+", opened on: "+str(self.open_date)+", closed on:"+str(self.closing_date)+", price: "+str(self.price_range)+", reviews: " + str(self.review_count) + ")"
 
     def plot_moving_avg(self):
-        num_days = len(self.moving_avg_ratings)
-        plt.figure()
-        plt.plot(range(num_days), self.moving_avg_ratings)
-        plt.axis([0, num_days, 0 , 5]);
+        ratings_xy = nested_list_to_xy_mat(self.reviews_of_days)
+        ratings_x = ratings_xy[:, 0]
+        ratings_y = ratings_xy[:, 1]
+
+        plt.figure(figsize=(30, 9))
+        ax = plt.subplot(111)
+        ax.spines["top"].set_visible(False)
+        ax.spines["bottom"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        ax.spines["left"].set_visible(False)
+        ax.get_xaxis().tick_bottom()
+        ax.get_yaxis().tick_left()
+        plt.xlabel("Day", fontsize=30)
+        plt.ylabel("Rating", fontsize=30)
+        plt.plot(ratings_x, ratings_y, 'o', color=tableau20[0], markeredgecolor=None, markersize=8.0)
+        plt.plot(self.moving_avg_ratings, lw=5, color=tableau20[3])
+        plt.xticks(fontsize=24)
+        plt.yticks(fontsize=24)
+        plt.xlim(self.open_date + 60, len(self.moving_avg_ratings) - 60)
+        plt.ylim(0,5.5)
+        plt.savefig("moving_avg.pdf")
         plt.show()
 
     def diff_features(self, other):

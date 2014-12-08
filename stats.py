@@ -192,47 +192,59 @@ def gen_trend_vec(businesses, window_size):
     return result
 
 def correlation_bus(x,y):
-    start = max(x.open_date + 15, y.open_date + 15)
-    end = min(len(x.moving_avg_ratings), start + 120)
+	start=max(x.open_date,y.open_date)+0.0
+	end=min(x.last_review,y.last_review)+0.0
+	if(end==start):
+		return 0
+	x_ave=np.average(x.moving_avg_ratings[x.open_date:x.last_review+1])
+	y_ave=np.average(y.moving_avg_ratings[y.open_date:y.last_review+1])
 
-    if(end <= start):
-        return 0
+	a=map(lambda el: 0 if el ==0 else el-x_ave, x.moving_avg_ratings)
+	b=map(lambda el: 0 if el ==0 else el-y_ave, y.moving_avg_ratings)
 
-    x_se = x.moving_avg_ratings[start:end]
-    y_se = y.moving_avg_ratings[start:end]
-    xs = range(start, end)
-
-    # plt.figure(figsize=(30, 9))
-    # ax = subplot(111)
-    # ax.spines["top"].set_visible(False)
-    # ax.spines["bottom"].set_visible(False)
-    # ax.spines["right"].set_visible(False)
-    # ax.spines["left"].set_visible(False)
-    # ax.get_xaxis().tick_bottom()
-    # ax.get_yaxis().tick_left()
-    # plt.xlabel("Day", fontsize=30)
-    # plt.ylabel("Rating", fontsize=30)
-    # plt.plot(xs, x_se, lw=5, color=tableau20[3])
-    # plt.plot(xs, y_se, lw=5, color=tableau20[0])
-    # xticks(fontsize=24)
-    # yticks(fontsize=24)
-    # xlim(start, end + 1)
-    # ylim(0,5.5)
-    # plt.savefig("corr.pdf")
-    # plt.show()
-
-    x_avg = np.average(x_se)
-    y_avg = np.average(y_se)
-
-    a = x_se - x_avg
-    b = y_se - y_avg
-
-    length = end - start
-    E_XY = np.dot(a, b) / length
-    s_x = math.sqrt(np.dot(a, a) / length)
-    s_y = math.sqrt(np.dot(b, b) / length)
-    corr = E_XY / (s_x * s_y) if s_x * s_y > 0 else 0
-    return corr
+	return np.dot(a,b)/(end-start)
+# def correlation_bus(x,y):
+#     start = max(x.open_date + 15, y.open_date + 15)
+#     end = min(len(x.moving_avg_ratings), start + 120)
+# 
+#     if(end <= start):
+#         return 0
+# 
+#     x_se = x.moving_avg_ratings[start:end]
+#     y_se = y.moving_avg_ratings[start:end]
+#     xs = range(start, end)
+# 
+#     # plt.figure(figsize=(30, 9))
+#     # ax = subplot(111)
+#     # ax.spines["top"].set_visible(False)
+#     # ax.spines["bottom"].set_visible(False)
+#     # ax.spines["right"].set_visible(False)
+#     # ax.spines["left"].set_visible(False)
+#     # ax.get_xaxis().tick_bottom()
+#     # ax.get_yaxis().tick_left()
+#     # plt.xlabel("Day", fontsize=30)
+#     # plt.ylabel("Rating", fontsize=30)
+#     # plt.plot(xs, x_se, lw=5, color=tableau20[3])
+#     # plt.plot(xs, y_se, lw=5, color=tableau20[0])
+#     # xticks(fontsize=24)
+#     # yticks(fontsize=24)
+#     # xlim(start, end + 1)
+#     # ylim(0,5.5)
+#     # plt.savefig("corr.pdf")
+#     # plt.show()
+# 
+#     x_avg = np.average(x_se)
+#     y_avg = np.average(y_se)
+# 
+#     a = x_se - x_avg
+#     b = y_se - y_avg
+# 
+#     length = end - start
+#     E_XY = np.dot(a, b) / length
+#     s_x = math.sqrt(np.dot(a, a) / length)
+#     s_y = math.sqrt(np.dot(b, b) / length)
+#     corr = E_XY / (s_x * s_y) if s_x * s_y > 0 else 0
+#     return corr
 
 def correlation_mat(businesses):
 	n=len(businesses)

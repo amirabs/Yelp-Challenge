@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{The dataset}{}% 2
+\BOOKMARK [1][-]{section.3}{Preprocessing}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Running average of ratings}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Clustering}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Correlation of ratings}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Features}{}% 7
+\BOOKMARK [1][-]{section.5}{Models}{}% 8
+\BOOKMARK [1][-]{section.6}{Results}{}% 9
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 10
+\BOOKMARK [1][-]{section.8}{Future Work}{}% 11

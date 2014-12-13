@@ -64,16 +64,18 @@ def mysvm_3class():
 def mysvm():
 	corr_thresh=0.1;
 	corr_1d=load_file("corr_1d.txt")
-	ind=np.where( (corr_1d>0.65) | (corr_1d<0) )
+	#ind=np.where( (corr_1d>0.088) | (corr_1d<0.06) ) #gaussian
+	ind=np.where( (abs(corr_1d)>0.047) | (abs(corr_1d)<0.009) ) #movave
 	corr_1d_filtered=corr_1d[ind]
-	ind_bin=np.where(corr_1d_filtered > 0)
+	#ind_bin=np.where(corr_1d_filtered > 0.08) #gaussian
+	ind_bin=np.where(abs(corr_1d_filtered) > 0.026) #moveave
 	corr_1d_bin = np.zeros(len(corr_1d_filtered))
 	corr_1d_bin[ind_bin] = 1
 	print ind[0].shape
 	print "positive corr:"
 	print ind_bin[0].shape
-	print corr_1d_bin
-	print corr_1d_filtered
+	#print corr_1d_bin
+	#print corr_1d_filtered
 
 	feature_mat=load_file("feature_mat.txt")
 	feature_mat_filtered=feature_mat[ind]
@@ -82,23 +84,32 @@ def mysvm():
 	#try remove the distances from the features
 	feature_mat_filtered2 = feature_mat_filtered[:,0:];
 	#standardize the feature 'distance' through operations in dum:
-	dum = feature_mat_filtered[:,0]
+	dum = feature_mat_filtered2[:,0]
 	dum = 2 * dum / np.amax(dum)
-	dum = dum-1
-	feature_mat_filtered[:,0] = dum
-	clf = svm.SVC(kernel='poly', C=1)
-	a=cross_val_score(clf, feature_mat_filtered2, corr_1d_bin, cv=15)
+	#dum = dum-1
+	feature_mat_filtered2[:,0] = dum
+	#clf = svm.SVC(kernel='rbf', C=1)
+	clf= LogisticRegression(penalty='l1', tol=0.01,C =1)
+	a=cross_val_score(clf, feature_mat_filtered2, corr_1d_bin, cv=10)
+	train_score = clf.fit(feature_mat_filtered, corr_1d_bin).score(feature_mat_filtered, corr_1d_bin)
 	print a
-	print "average cross validation error: " + str(np.average(a))
+	print "training score: " + str(train_score);
+	print "average cross validation score: " + str(np.average(a))
+	print(len(corr_1d))
+	print(np.percentile(abs(corr_1d),50))
+	dum1 = np.median(abs(corr_1d))
+
+
 
 def svm_asymthresh():
-	corr_thresh=0.36;
+	corr_thresh=0.026; # for the working data movave 0.71
+	#corr_thresh=0.08; #for gaussian
 	corr_1d=load_file("corr_1d.txt")
-	ind=np.where(corr_1d>corr_thresh)
+	ind=np.where(abs(corr_1d)>corr_thresh)
 	corr_1d_bin = np.zeros(len(corr_1d))
 	corr_1d_bin[ind] = 1
 
-	print "high positive corr:"
+	print "high corr:"
 	print len(ind[0])
 	print corr_1d_bin
 
@@ -115,9 +126,13 @@ def svm_asymthresh():
 	dum = dum-1
 	feature_mat_filtered[:,0] = dum
 	clf = svm.SVC(kernel='linear', C=1)
+	#clf= LogisticRegression(penalty='l1', tol=0.01)
+	#clf.fit(feature_mat_filtered, corr_1d_bin)
 	a=cross_val_score(clf, feature_mat_filtered, corr_1d_bin, cv=10)
+	#train_score = clf.fit(feature_mat_filtered, corr_1d_bin).score(feature_mat_filtered, corr_1d_bin)
 	print a
-	print "average cross validation error: " + str(np.average(a))
+	#print "training score: " + str(train_score);
+	print "average cross validation score: " + str(np.average(a))
 
 
 def naiveb():
@@ -266,7 +281,7 @@ def delta_svm_3class():
     feature_mat_filtered = feature_mat_filtered / np.tile(np.max(np.abs(feature_mat_filtered), 0), [feature_mat_filtered.shape[0], 1])
     print feature_mat_filtered
 
-    ind_val_0 = np.where(np.abs(delta_1d_filtered) < delta_thresh)
+    ind_val_0 = np.where(np.abs(delta_1d_filtered) < -delta_thresh)
     ind_val_1 = np.where(np.abs(delta_1d_filtered) >= delta_thresh)
 
     print "total:" + str(len(delta_1d_filtered))
@@ -318,11 +333,11 @@ def delta_svm_posvsneg():
     delta_thresh = 0.1
     dist_thresh = 1
 
-    delta_1d = load_file("mean_1d.txt")
+    delta_1d = load_file("gen_trend_1d.txt")
     feature_mat = load_file("feature_mat.txt")
 
     feature_mat, delta_1d = filter_data(feature_mat, delta_1d)
-    feature_mat, delta_1d = sampled_data(feature_mat, delta_1d)
+    #feature_mat, delta_1d = sampled_data(feature_mat, delta_1d)
 
     close_vals = np.where(feature_mat[:, 0] < dist_thresh)
     delta_1d_filtered = delta_1d[close_vals]
@@ -337,7 +352,7 @@ def delta_svm_posvsneg():
     #remove the corresponding entries in feature_mat_filtered
     feature_mat_filtered2 = preprocessing.scale(feature_mat_filtered)
     #do the labeling in a new vector delta_1d_bin
-    indpos = np.where( np.abs(delta_1d_filtered2) > 0.2)
+    indpos = np.where( abs(delta_1d_filtered2) >0.2)
     delta_1d_bin = np.zeros(len(delta_1d_filtered2))
     delta_1d_bin[:] = -1
     delta_1d_bin[indpos] = 1
@@ -347,11 +362,96 @@ def delta_svm_posvsneg():
 
 
     clf = svm.SVC(kernel='rbf', C = 1)
-    a=cross_val_score(clf, feature_mat_filtered2, delta_1d_bin, cv=5)
+    a=cross_val_score(clf, feature_mat_filtered2, delta_1d_bin, cv=10)
     print a
     print "average cross validation score: " + str(np.average(a))
 
+def generic_sigvsnonsig(label_file,clf,remove_ratio):	
+	corr_1d=load_file(label_file)
+	feature_mat=load_file("feature_mat.txt")
+	feature_mat, corr_1d = filter_data(feature_mat, corr_1d)
+	N = len(corr_1d)
+	thresh1 = (0.5 - remove_ratio/2)*100
+	thresh2 = (0.5 + remove_ratio/2)*100
+	minor_cutoff = np.percentile(abs(corr_1d),thresh1)
+	major_cutoff = np.percentile(abs(corr_1d),thresh2)
+	med_data = median(abs(corr_1d))
+	ind=np.where( (abs(corr_1d)>major_cutoff) | (abs(corr_1d)<minor_cutoff) ) #movave
+	corr_1d_filtered=corr_1d[ind]
+	ind_bin=np.where(abs(corr_1d_filtered) > med_data)
+	corr_1d_bin = np.zeros(len(corr_1d_filtered))
+	corr_1d_bin[ind_bin] = 1
+	print "abs med: " +str(major_cutoff)
+	print "total data:"
+	print len(ind[0])
+	print "significant corr:"
+	print len(ind_bin[0])
+
+	
+	feature_mat_filtered=feature_mat[ind]
+
+	print feature_mat_filtered.shape
+	#try remove the distances from the features
+	feature_mat_filtered2 = feature_mat_filtered[:,0:];
+	#standardize the feature 'distance' through operations in dum:
+	dum = feature_mat_filtered2[:,0]
+	dum = 2 * dum / np.amax(dum)
+	feature_mat_filtered2[:,0] = dum
+	a=cross_val_score(clf, feature_mat_filtered, corr_1d_bin, cv=10)
+	train_score = clf.fit(feature_mat_filtered, corr_1d_bin).score(feature_mat_filtered, corr_1d_bin)
+	print a
+	print "training score: " + str(train_score);
+	print "average cross validation score: " + str(np.average(a))
+def generic_posvsneg(label_file,clf,remove_ratio):	
+	corr_1d=load_file(label_file)
+	feature_mat=load_file("90_feature_mat.txt")
+	feature_mat, corr_1d = filter_data(feature_mat, corr_1d)
+	N = len(corr_1d)
+	ind_neg = np.where( (corr_1d<0)) 
+	numneg = len(ind_neg[0])
+	ratneg_to_keep = 100 * (1-remove_ratio)/2 
+	print "ratneg to keep: " + str(ratneg_to_keep)
+	neg_thresh = np.percentile(corr_1d,ratneg_to_keep)
+	if neg_thresh > 0:
+		neg_thresh = 0
+		ratpos_to_keep = 1-numneg/N
+	else:
+		ratpos_to_keep = 100-ratneg_to_keep
+	pos_thresh = np.percentile(corr_1d,ratpos_to_keep)
+	if pos_thresh < 0:
+		pos_thresh = 0;
+	print pos_thresh
+	print neg_thresh
+	ind=np.where( (corr_1d<neg_thresh) | (corr_1d>pos_thresh) ) 
+	corr_1d_filtered=corr_1d[ind]
+	ind_bin=np.where(corr_1d_filtered > 0)
+	corr_1d_bin = np.zeros(len(corr_1d_filtered))
+	corr_1d_bin[ind_bin] = 1
+	
+	print "total neg: " + str(numneg)
+	print "total data:"
+	print len(ind[0])
+	print "significant corr:"
+	print len(ind_bin[0])
+	feature_mat_filtered=feature_mat[ind]
+
+	print feature_mat_filtered.shape
+	#try remove the distances from the features
+	feature_mat_filtered2 = feature_mat_filtered[:,0:];
+	#standardize the feature 'distance' through operations in dum:
+	dum = feature_mat_filtered2[:,0]
+	dum = 2 * dum / np.amax(dum)
+	feature_mat_filtered2[:,0] = dum
+	a=cross_val_score(clf, feature_mat_filtered2, corr_1d_bin, cv=10)
+	train_score = clf.fit(feature_mat_filtered, corr_1d_bin).score(feature_mat_filtered, corr_1d_bin)
+	print a
+	print "training score: " + str(train_score);
+	print "average cross validation score: " + str(np.average(a))
+	
+
 if __name__ == "__main__":
-    delta_svm_posvsneg()
+	#clf = svm.SVC(kernel='rbf', C = 1)
+	clf= LogisticRegression(penalty='l1', tol=0.01,C =1)
+	generic_sigvsnonsig("90_gen_trend_1d.txt",clf,0.2)
     # plot_dist_vs_delta()
     # delta_svm_posvsneg()

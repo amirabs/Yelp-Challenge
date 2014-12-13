@@ -1,6 +1,6 @@
 \documentclass{vldb}
 \usepackage{graphicx}
-\usepackage{balance}
+%\usepackage{balance}
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{hyperref}
@@ -103,24 +103,7 @@ We experimented with multiple clustering methods and ended up using k-means clus
 
 \subsection{Correlation of ratings}
 \label{sec:correlation_of_ratings}
-\begin{figure}
-\centering
-\includegraphics[width=\columnwidth]{cov_cluster_28}
-\caption{Correlation between ratings of businesses in the same cluster}
-\label{fig:covmat}
-\end{figure}
-After getting the clusters, we analyze the correlation of ratings between different businesses in the same cluster.
-To do so, we first apply a Gaussian filter to the time series of ratings to smooth out local fluctuations in ratings. The correlation of the ratings is then given by:
 
-\begin{align*}
-    \rho_{XY} &= \frac{E(XY)}{\sqrt{E(X^2) E(Y^2)}} \\
-    E(X) &= \frac{1}{n} \sum_{t = 0}^{n} r_t
-\end{align*}
-
-Where $r_t$ is the filtered rating.
-In this step we discard all businesses with a low number of ratings because they provide not enough signal to get a good estimate for the correlation.
-
-As Figure~\ref{fig:correlation} shows, there are a couple of cases with strong correlation.
 
 
 \section{Features}
@@ -155,8 +138,8 @@ Third set of features: For all continuous values, we use the distance as a featu
 \section{Models}
 All the analysis in the project was based on using the pairwise features outlined above for predicting pairwise metrics to be defined in what follows.
 Specifically, in this section we introduce 4 different metrics which we will henceforth call "pairwise impact metrics".
-\textit{NOTE:} Anything below is within a cluster
 
+Before we move onto detailing the metrics, it is important to note a one thing we have followed regardless of the metric used: relating only businesses within a reasonable distance. We have calculated all the metrics for pairs inside the same cluster since our scope is restricted to businesses that may have pairwise relationships due to their geographical closeness. This way, we hoped to eliminate the dominance of relationships with more global causes, such as a general increasing trend to prefer mediterranian food over indian food, or frozen yogurt shops over ice-cream shops. 
 
 
 \subsection*{Conditional Mean Analysis}
@@ -229,6 +212,8 @@ The method to apply was very similar to that for the trend analysis, with the di
 \end{equation*}
 with everything except for $s$ is as defined in the previous subsection. $s$ is the slope to the fitted line for the whole time window .
 
+The pairwise impact metric in general trend analysis was determined to be the slope of the fitted line($s$). 
+
 \begin{table*}[ht!]
 \centering
 \begin{tabular}{@{}llrrrr@{}}
@@ -258,11 +243,30 @@ with everything except for $s$ is as defined in the previous subsection. $s$ is 
 \caption{Example of correlation analysis for a pair of businesses}
 \end{figure}
 
-\textbf{\textit{Hypothesis}} : None of the previous approaches provided an adequate metric.
-For our last model we opted to use a correlation metric which reflects the relationship of two businesses over a long period of time.\\
+\textbf{\textit{Hypothesis}} :The correlation between the  time-series of average star ratings between businesses may serve as a low noise (as compared to metrics discussed above) metric as it reflects a pairwise relationship over a long period of time.\\
 \textbf{\textit{Proxy}} : Compute the correlation of ratings over time.\\
-\textbf{\textit{Expected results}} : The correlation can be predicted using the attributes of the existing businesses and the new business. 
+\textbf{\textit{Expected results}} : The correlation can be predicted using the attributes of the businesses within reasonable distance. 
 
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{cov_cluster_28}
+\caption{Correlation between ratings of 41 businesses in an example cluster}
+\label{fig:covmat}
+\end{figure}
+After choosing one cluster, we analyzed the correlation of ratings between different businesses inside the cluster.
+To do so, we first applied a Gaussian filter to the time series of ratings to smooth out local fluctuations in ratings. The correlation coefficient between the ratings were then calculated as:
+
+\begin{align*}
+    \rho_{XY} &= \frac{E(XY)}{\sqrt{E(X^2) E(Y^2)}} \\
+    E(X) &= \frac{1}{n} \sum_{t = 0}^{n} r_t
+\end{align*}
+
+Where $r_t$ is the filtered rating.
+In this step we discarded all businesses with a low number of ratings because they potentially would not provide not enough signal to get a good estimate for the correlation.
+
+As Figure~\ref{fig:correlation} shows, there are a quite a few cases with strong correlation.
+
+The pairwise impact metric was determined to be the correlation coefficient. 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
 %----------------------------------------------------------------------------------------
@@ -270,16 +274,20 @@ For our last model we opted to use a correlation metric which reflects the relat
 \section{Results}
 %
 We used Python to preprocess the data and used Scikit \cite{pedregosa2011scikit} to perform the machine learning tasks.
-We found that the previously presented feature sets performed very similarly.
+We found that the previously presented two sets of features performed very similarly.
 This indicates that the difference in attributes gives us enough information for the predictions that we studied.
 Thus, we are only presenting the results for the first feature set.
-Table~\ref{tab:results} contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
-The cluster consists of 147 businesses which corresponds to 10730 pairings.
-We did two types of experiments: (a) classification of positive vs. non-positive outcomes for all models and (b) classification of significant vs. insignificant outcomes (absolute value bigger than a certain threshold) for all models.
-For every model except Correlation Analysis, we also considered different lengths of periods to fit the model.
+
+
+We did two types of experiments: (a) classification of positive vs. negative values for all the metrics and (b) classification of significant vs. insignificant values (absolute value bigger than a certain threshold) for all models. Converting the metrics to binary features was exacly the same for all the metrics due to their conceptual correspondance. We also adjusted the thresholds to have an even distribution of the class labels in order to avoid bias in the classification accuracy.
+
+For every model except correlation analysis, we also considered different lengths of periods to fit the model.
 We found that there were only minor differences between a period of 60 days and 90 days.
 
-We also collected results for linear, poly and sigmoid kernels but we omit them here due to their poor performance.
+Table~\ref{tab:results} contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
+The cluster consists of 147 businesses which corresponds to 10730 pairings.
+
+We also collected results for linear, polynomial and sigmoid kernels for SVM classifier but we omitted them here due to their poor performance.
 
 \section{Conclusion}
 We tried to predict the interaction of two businesses with multiple models.

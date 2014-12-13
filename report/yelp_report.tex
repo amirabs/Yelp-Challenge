@@ -267,7 +267,7 @@ The pairwise impact metric was determined to be the correlation coefficient.
 
 \section{Results}
 %
-We used Python to preprocess the data and used Scikit \cite{pedregosa2011scikit} to perform the machine learning tasks.
+We used Python to preprocess and analyze the data and used Scikit package \cite{pedregosa2011scikit} to perform the machine learning tasks.
 We found that the previously presented two sets of features performed very similarly.
 This indicates that the difference in attributes gives us enough information for the predictions that we studied.
 Thus, we are only presenting the results for the first feature set.
@@ -279,9 +279,21 @@ For every model except correlation analysis, we also considered different length
 We found that there were only minor differences between a period of 60 days and 90 days.
 
 Table~\ref{tab:results} contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
+We used support vector classifier(SVM) with gaussian kernel and logistic regression with l1-norm regularization for all the tests.
 The cluster consists of 147 businesses which corresponds to 10730 pairings.
 
 We also collected results for linear, polynomial and sigmoid kernels for SVM classifier but we omitted them here due to their poor performance.
+
+\section{Discussion}
+
+Out of the 4 different pairwise impact metrics that we have made effort to predict, we were most successful with the correlation metric ($>80\%$ CV accuracy with both classifiers for both classification experiments). 
+One thing that we have noted is that SVM performed significantly superior to logistic regression for the conditional mean analysis, trend analysis, and general trend analysis, whereas it was outperformed slightly in the correlation analysis. We have speculated that this might be due to possible effective "noise" level from the first 3 metrics being significantly higher than that from the correlation metric. 
+SVM is able to fit better with the presence of noise due to its possibly higher VC dimension compared to that of logistic regression with l1 regularization.(Overfitting behavior of SVM compared to logistic regression classifier is also evident in the first 3 rows of Table~\ref{tab:results}). 
+However, given higher "signal to noise" ratio (hence cleaner data), which we believe is present in the correlation metric, it loses its comparative advantage against logistic regression. 
+
+Following up from this idea, we have gone back to the calculating the first three metrics and chose different values for the opening dates for the new businesses around the previously estimated values. In quite a few cases, we have observed considerable changes in the values for the metrics (data not shown, however on average 15-20\% of the pairwise metric values in the cluster of interest have shown considerable variation, with the majority of the pairwise values effected at different levels). This observation supports our suspicions about the discrepancies in the classification accuracies.
+
+One last thing worth mentioning is that, for the correlation analysis, the training accuracies were quite close to the 10 fold CV accuracies ($\le 3\%$ difference for logistic regression and $\le 5\%$ difference for SVM last row of Table~\ref{tab:results}). This fact suggests that the relationships between businesses within cluster are predicted accross disjoint subpopulations inside the cluster. This is important in answering the practical question of whether the correlation between any two novel businesses may be predicted by using a precalculated predicted model.
 
 \section{Conclusion}
 We tried to predict the interaction of two businesses with multiple models.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.6.4)  12 DEC 2014 19:15
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.6.4)  12 DEC 2014 20:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -477,50 +477,54 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
  <./moving_avg.pdf>]
-<mean.pdf, id=99, 2168.1pt x 650.43pt>
+
+LaTeX Warning: Reference `sec:correlation_of_ratings' on page 2 undefined on in
+put line 105.
+
+<mean.pdf, id=98, 2168.1pt x 650.43pt>
 File: mean.pdf Graphic file (type pdf)
  <use mean.pdf>
-Package pdftex.def Info: mean.pdf used on input line 149.
+Package pdftex.def Info: mean.pdf used on input line 143.
 (pdftex.def)             Requested size: 240.0pt x 71.99413pt.
 
 
-LaTeX Font Warning: Command \small invalid in math mode on input line 160.
+LaTeX Font Warning: Command \small invalid in math mode on input line 154.
 
 
-LaTeX Font Warning: Command \small invalid in math mode on input line 161.
+LaTeX Font Warning: Command \small invalid in math mode on input line 155.
 
 
-LaTeX Font Warning: Command \small invalid in math mode on input line 162.
+LaTeX Font Warning: Command \small invalid in math mode on input line 156.
 
 
-LaTeX Font Warning: Command \small invalid in math mode on input line 163.
+LaTeX Font Warning: Command \small invalid in math mode on input line 157.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 153--164
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 153--164
+Underfull \hbox (badness 10000) in paragraph at lines 147--158
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 153--164
+Underfull \hbox (badness 10000) in paragraph at lines 147--158
 
  []
 
-[2 <./clusters.png> <./mean.pdf>] <trend.pdf, id=137, 2168.1pt x 650.43pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--158
+
+ []
+
+[2 <./clusters.png> <./mean.pdf>] <trend.pdf, id=136, 2168.1pt x 650.43pt>
 File: trend.pdf Graphic file (type pdf)
 
 <use trend.pdf>
-Package pdftex.def Info: trend.pdf used on input line 176.
+Package pdftex.def Info: trend.pdf used on input line 170.
 (pdftex.def)             Requested size: 240.0pt x 71.99413pt.
- <gen_trend.pdf, id=138, 2168.1pt x 650.43pt>
+ <gen_trend.pdf, id=137, 2168.1pt x 650.43pt>
 File: gen_trend.pdf Graphic file (type pdf)
 
 <use gen_trend.pdf>
-Package pdftex.def Info: gen_trend.pdf used on input line 199.
+Package pdftex.def Info: gen_trend.pdf used on input line 193.
 (pdftex.def)             Requested size: 240.0pt x 71.99413pt.
 
 
@@ -529,7 +533,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 ! Missing number, treated as zero.
 <to be read again> 
                    *
-l.225 \multirow{2}{*}{Conditional Mean}
+l.219 \multirow{2}{*}{Conditional Mean}
                                          & SVM rbf             &   0.84/0.61...
 A number should have been here; I inserted `0'.
 (If you can't figure out why I needed to see a number,
@@ -538,8 +542,153 @@ look up `weird error' in the index to The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    *
-l.225 \multirow{2}{*}{Conditional Mean}
+l.219 \multirow{2}{*}{Conditional Mean}
                                          & SVM rbf             &   0.84/0.61...
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+
+Overfull \hbox (4.62497pt too wide) in paragraph at lines 219--219
+[]\OT1/cmr/m/n/9 * 
+ []
+
+
+Overfull \hbox (47.27747pt too wide) in paragraph at lines 219--219
+[]\OT1/cmr/m/n/9 Conditional 
+ []
+
+
+Overfull \hbox (22.35608pt too wide) in paragraph at lines 219--219
+\OT1/cmr/m/n/9 Mean  
+ []
+
+
+Overfull \vbox (6.75003pt too high) detected at line 219
+ []
+
+! Missing number, treated as zero.
+<to be read again> 
+                   *
+l.221 \multirow{2}{*}{Trend Analysis}
+                                            & SVM rbf             & 0.83/0.6...
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   *
+l.221 \multirow{2}{*}{Trend Analysis}
+                                            & SVM rbf             & 0.83/0.6...
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+
+Overfull \hbox (4.62497pt too wide) in paragraph at lines 221--221
+[]\OT1/cmr/m/n/9 * 
+ []
+
+
+Overfull \hbox (23.91997pt too wide) in paragraph at lines 221--221
+[]\OT1/cmr/m/n/9 Trend 
+ []
+
+
+Overfull \hbox (22.35262pt too wide) in paragraph at lines 221--221
+\OT1/cmr/m/n/9 Anal- 
+ []
+
+
+Overfull \hbox (7.96523pt too wide) in paragraph at lines 221--221
+\OT1/cmr/m/n/9 y- 
+ []
+
+
+Overfull \hbox (9.86661pt too wide) in paragraph at lines 221--221
+\OT1/cmr/m/n/9 sis  
+ []
+
+
+Overfull \vbox (27.75003pt too high) detected at line 221
+ []
+
+! Missing number, treated as zero.
+<to be read again> 
+                   *
+l.223 \multirow{2}{*}{General Trend Analysis}
+                                              & SVM rbf             & 0.84/0...
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   *
+l.223 \multirow{2}{*}{General Trend Analysis}
+                                              & SVM rbf             & 0.84/0...
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+
+Overfull \hbox (4.62497pt too wide) in paragraph at lines 223--223
+[]\OT1/cmr/m/n/9 * 
+ []
+
+
+Overfull \hbox (31.43866pt too wide) in paragraph at lines 223--223
+[]\OT1/cmr/m/n/9 General 
+ []
+
+
+Overfull \hbox (23.91997pt too wide) in paragraph at lines 223--223
+\OT1/cmr/m/n/9 Trend 
+ []
+
+
+Overfull \hbox (22.35262pt too wide) in paragraph at lines 223--223
+\OT1/cmr/m/n/9 Anal- 
+ []
+
+
+Overfull \hbox (7.96523pt too wide) in paragraph at lines 223--223
+\OT1/cmr/m/n/9 y- 
+ []
+
+
+Overfull \hbox (9.86661pt too wide) in paragraph at lines 223--223
+\OT1/cmr/m/n/9 sis  
+ []
+
+
+Overfull \vbox (38.25003pt too high) detected at line 223
+ []
+
+! Missing number, treated as zero.
+<to be read again> 
+                   *
+l.225 \multirow{2}{*}{Correlation Analysis}
+                                              & SVM rbf             & \multi...
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   *
+l.225 \multirow{2}{*}{Correlation Analysis}
+                                              & SVM rbf             & \multi...
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
 I'll assume that you meant to say pt, for printer's points.
@@ -553,184 +702,39 @@ Overfull \hbox (4.62497pt too wide) in paragraph at lines 225--225
  []
 
 
-Overfull \hbox (47.27747pt too wide) in paragraph at lines 225--225
-[]\OT1/cmr/m/n/9 Conditional 
- []
-
-
-Overfull \hbox (22.35608pt too wide) in paragraph at lines 225--225
-\OT1/cmr/m/n/9 Mean  
- []
-
-
-Overfull \vbox (6.75003pt too high) detected at line 225
- []
-
-! Missing number, treated as zero.
-<to be read again> 
-                   *
-l.227 \multirow{2}{*}{Trend Analysis}
-                                            & SVM rbf             & 0.83/0.6...
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-! Illegal unit of measure (pt inserted).
-<to be read again> 
-                   *
-l.227 \multirow{2}{*}{Trend Analysis}
-                                            & SVM rbf             & 0.83/0.6...
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-
-Overfull \hbox (4.62497pt too wide) in paragraph at lines 227--227
-[]\OT1/cmr/m/n/9 * 
- []
-
-
-Overfull \hbox (23.91997pt too wide) in paragraph at lines 227--227
-[]\OT1/cmr/m/n/9 Trend 
- []
-
-
-Overfull \hbox (22.35262pt too wide) in paragraph at lines 227--227
-\OT1/cmr/m/n/9 Anal- 
- []
-
-
-Overfull \hbox (7.96523pt too wide) in paragraph at lines 227--227
-\OT1/cmr/m/n/9 y- 
- []
-
-
-Overfull \hbox (9.86661pt too wide) in paragraph at lines 227--227
-\OT1/cmr/m/n/9 sis  
- []
-
-
-Overfull \vbox (27.75003pt too high) detected at line 227
- []
-
-! Missing number, treated as zero.
-<to be read again> 
-                   *
-l.229 \multirow{2}{*}{General Trend Analysis}
-                                              & SVM rbf             & 0.84/0...
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-! Illegal unit of measure (pt inserted).
-<to be read again> 
-                   *
-l.229 \multirow{2}{*}{General Trend Analysis}
-                                              & SVM rbf             & 0.84/0...
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-
-Overfull \hbox (4.62497pt too wide) in paragraph at lines 229--229
-[]\OT1/cmr/m/n/9 * 
- []
-
-
-Overfull \hbox (31.43866pt too wide) in paragraph at lines 229--229
-[]\OT1/cmr/m/n/9 General 
- []
-
-
-Overfull \hbox (23.91997pt too wide) in paragraph at lines 229--229
-\OT1/cmr/m/n/9 Trend 
- []
-
-
-Overfull \hbox (22.35262pt too wide) in paragraph at lines 229--229
-\OT1/cmr/m/n/9 Anal- 
- []
-
-
-Overfull \hbox (7.96523pt too wide) in paragraph at lines 229--229
-\OT1/cmr/m/n/9 y- 
- []
-
-
-Overfull \hbox (9.86661pt too wide) in paragraph at lines 229--229
-\OT1/cmr/m/n/9 sis  
- []
-
-
-Overfull \vbox (38.25003pt too high) detected at line 229
- []
-
-! Missing number, treated as zero.
-<to be read again> 
-                   *
-l.231 \multirow{2}{*}{Correlation Analysis}
-                                              & SVM rbf             & \multi...
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-! Illegal unit of measure (pt inserted).
-<to be read again> 
-                   *
-l.231 \multirow{2}{*}{Correlation Analysis}
-                                              & SVM rbf             & \multi...
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
-
-Overfull \hbox (4.62497pt too wide) in paragraph at lines 231--231
-[]\OT1/cmr/m/n/9 * 
- []
-
-
-Overfull \hbox (45.78093pt too wide) in paragraph at lines 231--231
+Overfull \hbox (45.78093pt too wide) in paragraph at lines 225--225
 []\OT1/cmr/m/n/9 Correlation 
  []
 
 
-Overfull \hbox (22.35262pt too wide) in paragraph at lines 231--231
+Overfull \hbox (22.35262pt too wide) in paragraph at lines 225--225
 \OT1/cmr/m/n/9 Anal- 
  []
 
 
-Overfull \hbox (7.96523pt too wide) in paragraph at lines 231--231
+Overfull \hbox (7.96523pt too wide) in paragraph at lines 225--225
 \OT1/cmr/m/n/9 y- 
  []
 
 
-Overfull \hbox (9.86661pt too wide) in paragraph at lines 231--231
+Overfull \hbox (9.86661pt too wide) in paragraph at lines 225--225
 \OT1/cmr/m/n/9 sis  
  []
 
 
-Overfull \vbox (27.75003pt too high) detected at line 231
+Overfull \vbox (27.75003pt too high) detected at line 225
  []
 
-<corr.pdf, id=139, 2168.1pt x 650.43pt>
+<corr.pdf, id=138, 2168.1pt x 650.43pt>
 File: corr.pdf Graphic file (type pdf)
  <use corr.pdf>
-Package pdftex.def Info: corr.pdf used on input line 242.
+Package pdftex.def Info: corr.pdf used on input line 236.
 (pdftex.def)             Requested size: 240.0pt x 71.99413pt.
 
-<cov_cluster_28.png, id=140, 578.16pt x 433.62pt>
+<cov_cluster_28.png, id=139, 578.16pt x 433.62pt>
 File: cov_cluster_28.png Graphic file (type png)
  <use cov_cluster_28.png>
-Package pdftex.def Info: cov_cluster_28.png used on input line 252.
+Package pdftex.def Info: cov_cluster_28.png used on input line 246.
 (pdftex.def)             Requested size: 240.0pt x 179.99525pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -746,34 +750,34 @@ age group included in a single page
 >]
 
 LaTeX Warning: Reference `fig:correlation' on page 4 undefined on input line 26
-7.
+1.
 
 
 LaTeX Warning: Citation `pedregosa2011scikit' on page 4 undefined on input line
- 276.
+ 270.
 
 [4 <./cov_cluster_28.png>]
 No file yelp_report.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 315.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 321.
 [5
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 315.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 321.
  (./yelp_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 315.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 315.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 321.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 321.
 Package rerunfilecheck Info: File `yelp_report.out' has not changed.
-(rerunfilecheck)             Checksum: F960AAE6EFA959ED99CFBE33D9818A43;565.
+(rerunfilecheck)             Checksum: 4FAB57E128A56D41257610C93B2CD6D9;539.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 315.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 321.
  ) 
 Here is how much of TeX's memory you used:
  6663 strings out of 495028
- 94825 string characters out of 6181498
- 194749 words of memory out of 5000000
+ 94815 string characters out of 6181498
+ 194697 words of memory out of 5000000
  9741 multiletter control sequences out of 15000+600000
  24059 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -797,10 +801,10 @@ s/type1/public/amsfonts/cm/cmti9.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /public/amsfonts/cm/cmtt9.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/he
 lvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8
 a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb>
-Output written on yelp_report.pdf (5 pages, 383421 bytes).
+Output written on yelp_report.pdf (5 pages, 386554 bytes).
 PDF statistics:
- 306 PDF objects out of 1000 (max. 8388607)
- 184 compressed objects within 2 object streams
+ 307 PDF objects out of 1000 (max. 8388607)
+ 185 compressed objects within 2 object streams
  33 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 

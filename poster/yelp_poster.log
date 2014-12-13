@@ -1,0 +1,395 @@
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013) (format=xelatex 2013.5.30)  12 DEC 2014 14:36
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**yelp_poster.tex
+(./yelp_poster.tex
+LaTeX2e <2011/06/27>
+Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+(./a0poster.cls
+Document Class: a0poster 1997/05/07 v1.21b a0poster class (GK, MW)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+\xkoord=\count88
+\ykoord=\count89
+\xscale=\count90
+\yscale=\count91
+
+
+Package a0poster Warning: Unknown Option beamer on input line 85.
+
+(./a0size.sty
+File: a0size.sty 1997/05/06 v1.21b a0poster class (GK, MW)
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 218.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/cmex/m/n on input line 218.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/cmex/m/n on input line 218.
+\big@size=\dimen103
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/multicol.sty
+Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
+\c@tracingmulticols=\count92
+\mult@box=\box26
+\multicol@leftmargin=\dimen104
+\c@unbalance=\count93
+\c@collectmore=\count94
+\doublecol@number=\count95
+\multicoltolerance=\count96
+\multicolpretolerance=\count97
+\full@width=\dimen105
+\page@free=\dimen106
+\premulticols=\dimen107
+\postmulticols=\dimen108
+\multicolsep=\skip43
+\multicolbaselineskip=\skip44
+\partial@page=\box27
+\last@line=\box28
+\mult@rightbox=\box29
+\mult@grightbox=\box30
+\mult@gfirstbox=\box31
+\mult@firstbox=\box32
+\@tempa=\box33
+\@tempa=\box34
+\@tempa=\box35
+\@tempa=\box36
+\@tempa=\box37
+\@tempa=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\c@columnbadness=\count98
+\c@finalcolumnbadness=\count99
+\last@try=\dimen109
+\multicolovershoot=\dimen110
+\multicolundershoot=\dimen111
+\mult@nat@firstbox=\box50
+\colbreak@box=\box51
+\multicol@sort@counter=\count100
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: xetex.def on input line 225.
+
+(/usr/local/texlive/2013/texmf-dist/tex/xelatex/xetex-def/xetex.def
+File: xetex.def 2013/04/29 v0.96 LaTeX color/graphics driver for XeTeX (RRM/JK)
+
+)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/svgnam.def
+File: svgnam.def 2007/01/21 v2.11 Predefined colors according to SVG 1.1 (UK)
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count101
+\float@exts=\toks14
+\float@box=\box52
+\@float@everytoks=\toks15
+\@floatcapt=\box53
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: xetex.def on input line 91.
+)
+\Gin@req@height=\dimen112
+\Gin@req@width=\dimen113
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen114
+\lightrulewidth=\dimen115
+\cmidrulewidth=\dimen116
+\belowrulesep=\dimen117
+\belowbottomsep=\dimen118
+\aboverulesep=\dimen119
+\abovetopsep=\dimen120
+\cmidrulesep=\dimen121
+\cmidrulekern=\dimen122
+\defaultaddspace=\dimen123
+\@cmidla=\count102
+\@cmidlb=\count103
+\@aboverulesep=\dimen124
+\@belowrulesep=\dimen125
+\@thisruleclass=\count104
+\@lastruleclass=\count105
+\@thisrulewidth=\dimen126
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen127
+\captionmargin@=\dimen128
+\captionwidth=\dimen129
+\caption@tempdima=\dimen130
+\caption@indent=\dimen131
+\caption@parindent=\dimen132
+\caption@hangindent=\dimen133
+)
+\c@ContinuedFloat=\count106
+Package caption Info: float package is loaded.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks17
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip45
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks18
+\ex@=\dimen134
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen135
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count107
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count108
+\leftroot@=\count109
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count110
+\DOTSCASE@=\count111
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box54
+\strutbox@=\box55
+\big@size=\dimen136
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count112
+\c@MaxMatrixCols=\count113
+\dotsspace@=\muskip10
+\c@parentequation=\count114
+\dspbrk@lvl=\count115
+\tag@help=\toks19
+\row@=\count116
+\column@=\count117
+\maxfields@=\count118
+\andhelp@=\toks20
+\eqnshift@=\dimen137
+\alignsep@=\dimen138
+\tagshift@=\dimen139
+\tagwidth@=\dimen140
+\totwidth@=\dimen141
+\lineht@=\dimen142
+\@envbody=\toks21
+\multlinegap=\skip46
+\multlinetaggap=\skip47
+\mathdisplay@stack=\toks22
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2004/08/06 v2.20
+\thm@style=\toks23
+\thm@bodyfont=\toks24
+\thm@headfont=\toks25
+\thm@notefont=\toks26
+\thm@headpunct=\toks27
+\thm@preskip=\skip48
+\thm@postskip=\skip49
+\thm@headsep=\skip50
+\dth@everypar=\toks28
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen143
+\WF@size=\dimen144
+\c@WF@wrappedlines=\count119
+\WF@box=\box56
+\WF@everypar=\toks29
+Package: wrapfig 2003/01/31  v 3.6
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen145
+)
+\@float@every@table=\toks30
+
+(./yelp_poster.aux)
+\openout1 = `yelp_poster.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 41.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: wrapfig package is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <74.3> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 54.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <51.6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 56.
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--58
+
+ []
+
+File: figures/logo.png Graphic file (type QTm)
+<use  "figures/logo.png" >
+Overfull \hbox (19.72723pt too wide) in paragraph at lines 53--63
+[][] [] 
+ []
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <35.83> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 76.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 92.
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <24.88> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 92.
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--107
+
+ []
+
+File: figures/Yelp_logo.png Graphic file (type QTm)
+<use  "figures/Yelp_logo.png" >
+File: figures/Yelp_logo.png Graphic file (type QTm)
+ <use  "figures/Yelp_logo.png" >
+File: figures/Yelp_logo.png Graphic file (type QTm)
+
+<use  "figures/Yelp_logo.png" >
+File: figures/Yelp_logo.png Graphic file (type QTm)
+ <use  "figures/Yelp_logo.png" >
+File: figures/Yelp_logo.png Graphic file (type QTm)
+
+<use  "figures/Yelp_logo.png" >
+File: figures/Yelp_logo.png Graphic file (type QTm)
+ <use  "figures/Yelp_logo.png" >
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <29.86> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 129.
+File: ../moving_avg.pdf Graphic file (type QTm)
+
+<use  "../moving_avg.pdf" >
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 137.
+File: figures/clusters.png Graphic file (type QTm)
+ <use  "figures/clusters.png" >
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 158.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24.88> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 158.
+LaTeX Font Info:    Try loading font information for U+msa on input line 163.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 163.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+File: ../mean.pdf Graphic file (type QTm)
+
+<use  "../mean.pdf" >
+File: ../trend.pdf Graphic file (type QTm)
+ <use  "../trend.pdf" >
+File: ../gen_trend.pdf Graphic file (type QTm)
+ <use  "../gen_trend.pdf" >
+File: ../corr.pdf Graphic file (type QTm)
+
+<use  "../corr.pdf" >
+Overfull \hbox (36.79245pt too wide) in paragraph at lines 221--237
+[][] 
+ []
+
+No file yelp_poster.bbl.
+[1
+
+] (./yelp_poster.aux) ) 
+Here is how much of TeX's memory you used:
+ 3630 strings out of 493938
+ 53584 string characters out of 6148857
+ 151558 words of memory out of 5000000
+ 6893 multiletter control sequences out of 15000+600000
+ 18138 words of font info for 52 fonts, out of 8000000 for 9000
+ 1144 hyphenation exceptions out of 8191
+ 36i,10n,38p,571b,430s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on yelp_poster.pdf (1 page).

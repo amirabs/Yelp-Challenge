@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.11.12)  12 DEC 2014 17:10
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.11.12)  12 DEC 2014 17:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -541,21 +541,21 @@ page group included in a single page
 pdfTeX warning: pdflatex (file ./gen_trend.pdf): PDF inclusion: multiple pdfs w
 ith page group included in a single page
 >] (./yelp_report.bbl [4 <./corr.pdf>])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 305.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 307.
  [5
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 305.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 307.
  (./yelp_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 305.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 305.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 307.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 307.
 Package rerunfilecheck Info: File `yelp_report.out' has not changed.
 (rerunfilecheck)             Checksum: 734F28DC00AD25411EDB8F2D2FEDE983;611.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 305.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 307.
  ) 
 Here is how much of TeX's memory you used:
  6692 strings out of 493315
@@ -586,7 +586,7 @@ fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2013/texmf-dist/fo
 nts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/typ
 e1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/
 times/utmb8a.pfb>
-Output written on yelp_report.pdf (5 pages, 388166 bytes).
+Output written on yelp_report.pdf (5 pages, 388240 bytes).
 PDF statistics:
  322 PDF objects out of 1000 (max. 8388607)
  199 compressed objects within 2 object streams

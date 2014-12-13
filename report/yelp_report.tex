@@ -270,7 +270,9 @@ For our last model we opted to use a correlation metric which reflects the relat
 \section{Results}
 %
 We used Python to preprocess the data and used Scikit \cite{pedregosa2011scikit} to perform the machine learning tasks.
-We found that the previously presented feature sets performed very similarly. In the following section, we are presenting the results for the first feature set.
+We found that the previously presented feature sets performed very similarly.
+This indicates that the difference in attributes gives us enough information for the predictions that we studied.
+Thus, we are only presenting the results for the first feature set.
 Table~\ref{tab:results} contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
 The cluster consists of 147 businesses which corresponds to 10730 pairings.
 We did two types of experiments: (a) classification of positive vs. non-positive outcomes for all models and (b) classification of significant vs. insignificant outcomes (absolute value bigger than a certain threshold) for all models.

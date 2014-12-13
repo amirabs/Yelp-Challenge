@@ -100,12 +100,6 @@ The first step in our project is thus to find a good way of clustering businesse
 We found that using zip codes to group businesses is ineffective as groups of businesses often span zip code boundaries.
 We experimented with multiple clustering methods and ended up using k-means clustering with the geographical location as features because we are interested to observe interaction between businesses that are physically close to each other. Using k-means we are taking the advantage of clustering close businesses together and also putting far businesses that are not influencing each other into different clusters. In this case we can assume that the businesses in two different clusters are independent, and only businesses in one cluster influence each others behaviors. We will have a brief overview on the different clustering techniques used and a benchmark that reasons which one works the best in the case of our study.
 
-
-\subsection{Correlation of ratings}
-\label{sec:correlation_of_ratings}
-
-
-
 \section{Features}
 In various domains, like text learning, image classification, and specially cases where there are many features compared to data samples feature selection techniques are used. The feature sets selected for our model plays an important role to define a better feature similarity measure which can lead to improvement of our prediction algorithms and also finding correlations between different businesses.
 Once feature which is used to find the correlations of business ratings in Section~\ref{sec:correlation_of_ratings}, is the moving average of ratings stars. This feature give us an understanding of how a business was performing in a period of time and how the users rated that specific business in that time.

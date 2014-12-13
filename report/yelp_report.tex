@@ -1,6 +1,6 @@
 \documentclass{vldb}
 \usepackage{graphicx}
-\usepackage{balance}
+%\usepackage{balance}
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{hyperref}
@@ -44,10 +44,11 @@ We identify two main components of our machine learning project:
 \item Business Clustering
 \item Impact of a new business on a cluster
 	\begin{itemize}
-	 \item Selecting relevant features for use of the models
+  \item Selecting relevant features for use of the models
  	 \item Propose and test impact models
  	 \item Use machine learning techniques to predict the impact
   	\end{itemize}
+	
 \end{enumerate}
 
 \section{The dataset}
@@ -66,9 +67,9 @@ The dataset contains data from several cities and there is a rich set of attribu
 \end{itemize}
 
 The two most interesting aspects of the dataset for our project are the business attributes and the reviews.\\
-Two data points that are missing from the dataset are the opening and the closing dates of a business.
+Two data points that are missing from the dataset are the opening and the closing date of a business.
 To compensate for the lack of information, we use a simple heuristic: We assume that the business opened on the date of the first comment and we assume that it has been closed on the date of the last comment if the last comment more than 2 months older than the newest comment in the dataset.
-We argue that this is a reasonable choice because our project requires us to look at businesses with a reasonable number of ratings and in these cases the opening/closing date should be reasonably close to the date of the first and the last review. Also we believe first review as the opening date is a good estimate for our models since this is the point where customers have actually started rating the restaurant
+We argue that this is a reasonable choice because our project requires us to look at businesses with a reasonable number of ratings and in these cases the opening/closing date should be reasonably close to the date of the first and the last review. Also we believe first review as the opening date is a good estimate for our models since this is the point where customers have actually started rating the restaurant. 
 
 \section{Preprocessing}
 \subsection{Running average of ratings}
@@ -79,13 +80,13 @@ In addition, we filter out businesses with a low number of ratings. We chose 30 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{moving_avg.pdf}
+\includegraphics[width=\linewidth]{moving_avg.pdf}
 \caption{ Moving average of ratings for a specific business}
 \label{fig:moving_average}
 \end{figure}
 
 \subsection{Clustering}
-We checked different clustering algorithms and for the same number of clusters, K-Means using the geographic locations of businesses as the distance metric had the best result. Results of two clustering algorithms are shown in Figure~\ref{fig:clusters}. As we can see DBSCAN is not giving a good result. Since in a city there are so many businesses acting like bridges that connect two big clusters together. This is the main reason that in the business clustering problem DBSCAN is not performing as good as K-Means.
+We checked different clustering algorithms and for the same number of clusters, K-Means based on the geographic locations of businesses had the best result. The result of two clustering algorithms results are shown in Figure~\ref{fig:clusters}.  As we can see DBSCAN is not giving a good result. Since in a city there are so many businesses acting like bridges that connect two big clusters together. This is the main reason that in the business clustering problem DBSCAN is not performing as good as K-Means.
 
 \begin{figure}[h]
 \centering
@@ -99,31 +100,8 @@ The first step in our project is thus to find a good way of clustering businesse
 We found that using zip codes to group businesses is ineffective as groups of businesses often span zip code boundaries.
 We experimented with multiple clustering methods and ended up using k-means clustering with the geographical location as features because we are interested to observe interaction between businesses that are physically close to each other. Using k-means we are taking the advantage of clustering close businesses together and also putting far businesses that are not influencing each other into different clusters. In this case we can assume that the businesses in two different clusters are independent, and only businesses in one cluster influence each others behaviors. We will have a brief overview on the different clustering techniques used and a benchmark that reasons which one works the best in the case of our study.
 
-
-\subsection{Correlation of ratings}
-\label{sec:correlation_of_ratings}
-\begin{figure}
-\centering
-\includegraphics[width=\columnwidth]{cov_cluster_28}
-\caption{Correlation between ratings of businesses in the same cluster}
-\label{fig:covmat}
-\end{figure}
-After getting the clusters, we analyze the correlation of ratings between different businesses in the same cluster.
-To do so, we first apply a Gaussian filter to the time series of ratings to smooth out local fluctuations in ratings. The correlation of the ratings is then given by:
-
-\begin{align*}
-    \rho_{XY} &= \frac{E(XY)}{\sqrt{E(X^2) E(Y^2)}} \\
-    E(X) &= \frac{1}{n} \sum_{t = 0}^{n} r_t
-\end{align*}
-
-Where $r_t$ is the filtered rating.
-In this step we discard all businesses with a low number of ratings because they provide not enough signal to get a good estimate for the correlation.
-
-As Figure~\ref{fig:correlation} shows, there are a couple of cases with strong correlation. We can see they are plenty of other pairs that have a medium correlation meaning they have influence on each other.
-
-
 \section{Features}
-In various domains, like text learning, image classification, and specially cases where there are many features compared to data samples, feature selection techniques are used. The feature sets selected for our model plays an important role to define a better feature similarity measure which can lead to improvement of our prediction algorithms and also finding correlations between different businesses.
+In various domains, like text learning, image classification, and specially cases where there are many features compared to data samples feature selection techniques are used. The feature sets selected for our model plays an important role to define a better feature similarity measure which can lead to improvement of our prediction algorithms and also finding correlations between different businesses.
 Once feature which is used to find the correlations of business ratings in Section~\ref{sec:correlation_of_ratings}, is the moving average of ratings stars. This feature gives us an understanding of how a business was performing in a period of time and how the users rated that specific business in that time.
 
 Since the motivation is predicting the impact of the businesses within a cluster, it is natural to consider pairwise metrics when constructing the features for the models. To this end, we constructed features out of the pairwise comparison of the attributes of the businesses in the dataset. Some of the business attributes in the dataset are:
@@ -154,8 +132,8 @@ Third set of features: For all continuous values, we use the distance as a featu
 \section{Models}
 All the analysis in the project was based on using the pairwise features outlined above for predicting pairwise metrics to be defined in what follows.
 Specifically, in this section we introduce 4 different metrics which we will henceforth call "pairwise impact metrics".
-\textit{NOTE:} Anything below is within a cluster
 
+Before we move onto detailing the metrics, it is important to note a one thing we have followed regardless of the metric used: relating only businesses within a reasonable distance. We have calculated all the metrics for pairs inside the same cluster since our scope is restricted to businesses that may have pairwise relationships due to their geographical closeness. This way, we hoped to eliminate the dominance of relationships with more global causes, such as a general increasing trend to prefer mediterranian food over indian food, or frozen yogurt shops over ice-cream shops. 
 
 
 \subsection*{Conditional Mean Analysis}
@@ -228,6 +206,8 @@ The method to apply was very similar to that for the trend analysis, with the di
 \end{equation*}
 with everything except for $s$ is as defined in the previous subsection. $s$ is the slope to the fitted line for the whole time window .
 
+The pairwise impact metric in general trend analysis was determined to be the slope of the fitted line($s$). 
+
 \begin{table*}[ht!]
 \centering
 \begin{tabular}{@{}llrrrr@{}}
@@ -259,26 +239,63 @@ The correlation coefficient is a measure of linear association between two varia
 \caption{Example of correlation analysis for a pair of businesses}
 \end{figure}
 
-\textbf{\textit{Hypothesis}} : None of the previous approaches provided an adequate metric.
-For our last model we opted to use a correlation metric which reflects the relationship of two businesses over a long period of time.\\
+\textbf{\textit{Hypothesis}} :The correlation between the  time-series of average star ratings between businesses may serve as a low noise (as compared to metrics discussed above) metric as it reflects a pairwise relationship over a long period of time.\\
 \textbf{\textit{Proxy}} : Compute the correlation of ratings over time.\\
-\textbf{\textit{Expected results}} : The correlation can be predicted using the attributes of the existing businesses and the new business. 
+\textbf{\textit{Expected results}} : The correlation can be predicted using the attributes of the businesses within reasonable distance. 
 
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{cov_cluster_28}
+\caption{Correlation between ratings of 41 businesses in an example cluster}
+\label{fig:covmat}
+\end{figure}
+After choosing one cluster, we analyzed the correlation of ratings between different businesses inside the cluster.
+To do so, we first applied a Gaussian filter to the time series of ratings to smooth out local fluctuations in ratings. The correlation coefficient between the ratings were then calculated as:
+
+\begin{align*}
+    \rho_{XY} &= \frac{E(XY)}{\sqrt{E(X^2) E(Y^2)}} \\
+    E(X) &= \frac{1}{n} \sum_{t = 0}^{n} r_t
+\end{align*}
+
+Where $r_t$ is the filtered rating.
+In this step we discarded all businesses with a low number of ratings because they potentially would not provide not enough signal to get a good estimate for the correlation.
+
+As Figure~\ref{fig:correlation} shows, there are a quite a few cases with strong correlation.
+
+The pairwise impact metric was determined to be the correlation coefficient. 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
 %----------------------------------------------------------------------------------------
 
 \section{Results}
 %
-There were so many tools we used for getting the results. The main tools for our study was Python to preprocess the data and the Scikit \cite{pedregosa2011scikit} to perform the machine learning tasks.
-We found that the previously presented feature sets performed very similarly. In the following section, we are presenting the results for the first feature set.
-Table~\ref{tab:results} contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
-The cluster consists of 147 businesses which corresponds to 10730 pairings.
-We did two types of experiments: (a) classification of positive vs. non-positive outcomes for all models and (b) classification of significant vs. insignificant outcomes (absolute value bigger than a certain threshold) for all models.
-For every model except Correlation Analysis, we also considered different lengths of periods to fit the model.
+There were so many tools we used for getting the results. The main tools for our study was Python to preprocess and analyze the data and the Scikit package \cite{pedregosa2011scikit} to perform the machine learning tasks.
+We found that the previously presented two sets of features performed very similarly.
+This indicates that the difference in attributes gives us enough information for the predictions that we studied.
+Thus, we are only presenting the results for the first feature set.
+
+
+We did two types of experiments: (a) classification of positive vs. negative values for all the metrics and (b) classification of significant vs. insignificant values (absolute value bigger than a certain threshold) for all models. Converting the metrics to binary features was exacly the same for all the metrics due to their conceptual correspondance. We also adjusted the thresholds to have an even distribution of the class labels in order to avoid bias in the classification accuracy.
+
+For every model except correlation analysis, we also considered different lengths of periods to fit the model.
 We found that there were only minor differences between a period of 60 days and 90 days.
 
-We also collected results for linear, poly and sigmoid kernels but we omit them here due to their poor performance.
+Table~\ref{tab:results} contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
+We used support vector classifier(SVM) with gaussian kernel and logistic regression with l1-norm regularization for all the tests.
+The cluster consists of 147 businesses which corresponds to 10730 pairings.
+
+We also collected results for linear, polynomial and sigmoid kernels for SVM classifier but we omitted them here due to their poor performance.
+
+\section{Discussion}
+
+Out of the 4 different pairwise impact metrics that we have made effort to predict, we were most successful with the correlation metric ($>80\%$ CV accuracy with both classifiers for both classification experiments). 
+One thing that we have noted is that SVM performed significantly superior to logistic regression for the conditional mean analysis, trend analysis, and general trend analysis, whereas it was outperformed slightly in the correlation analysis. We have speculated that this might be due to possible effective "noise" level from the first 3 metrics being significantly higher than that from the correlation metric. 
+SVM is able to fit better with the presence of noise due to its possibly higher VC dimension compared to that of logistic regression with l1 regularization.(Overfitting behavior of SVM compared to logistic regression classifier is also evident in the first 3 rows of Table~\ref{tab:results}). 
+However, given higher "signal to noise" ratio (hence cleaner data), which we believe is present in the correlation metric, it loses its comparative advantage against logistic regression. 
+
+Following up from this idea, we have gone back to the calculating the first three metrics and chose different values for the opening dates for the new businesses around the previously estimated values. In quite a few cases, we have observed considerable changes in the values for the metrics (data not shown, however on average 15-20\% of the pairwise metric values in the cluster of interest have shown considerable variation, with the majority of the pairwise values effected at different levels). This observation supports our suspicions about the discrepancies in the classification accuracies.
+
+One last thing worth mentioning is that, for the correlation analysis, the training accuracies were quite close to the 10 fold CV accuracies ($\le 3\%$ difference for logistic regression and $\le 5\%$ difference for SVM, last row of Table~\ref{tab:results}). This fact suggests that the relationships between businesses within cluster are predicted accross disjoint subpopulations inside the cluster. This is important in answering the practical question of whether the correlation between any two novel businesses may be predicted by using a precalculated predicted model.
 
 \section{Conclusion}
 We tried to predict the interaction of two businesses with multiple models.

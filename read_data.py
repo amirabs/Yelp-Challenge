@@ -134,13 +134,13 @@ def generate_cat_features(businesses):
     print "Categories: " + str(list_of_categories)
     print "Number of features: " + str(len(list_of_categories))
 
-def construct_feature_diff_matrix(businesses):
+def construct_feature_diff_matrix(businesses, rich_features):
     print "Constructing feature diff matrix"
 
     diff_matrix = []
     for i in range(len(businesses)):
         for j in range(i):
-            diff_matrix.append(businesses[i].diff_features(businesses[j]))
+            diff_matrix.append(businesses[i].diff_features(businesses[j], rich_features))
 
     return array(diff_matrix)
 

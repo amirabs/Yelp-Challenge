@@ -3,8 +3,7 @@
 \usepackage{balance}
 \usepackage{multirow}
 \usepackage{booktabs}
-
-
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -26,24 +25,21 @@ Andres N\"otzli\\
 
 \maketitle
 
-\begin{abstract}
-Here goes nothing.
-\end{abstract}
-
 \section{Introduction}
 In many cities, there is a small number of streets with a lot of restaurants.
-Being in a street like this is a double-edged sword for the individual restaurant. 
-On one side, it is valuable because it gets them the attention of potential customers for free. 
-On the other hand, the restaurants are competing for customers with similar needs and the offerings are not free from overlap. \cite{pedregosa2011scikit}
-Our hypothesis is that this balance is a function of the size of the cluster.
-The bigger the cluster grows, the more customers start to search for a restaurant within this cluster, increasing the number of total customers of the cluster and emphasizing the symbiosis of the restaurants living in the cluster. 
-At the same time, however, the number of potential customers is limited and as it nears saturation, the competitive nature of the relationship between the restaurants grows stronger.
-The goal of our project is to test this hypothesis by finding clusters of restaurants in a dataset and to model how the individual restaurant is affected by being part of the cluster. 
-Machine learning will play a crucial role in this process, from finding clusters of restaurants to model the impact on the individual restaurant. 
-We will start by comparing clusters of different sizes but ideally we would like to find clusters where we can observe growth over time and the effect on the restaurants over this time period. If the project proves to be successful, it has the potential to offer a unique insight in the relationship between restaurants in such clusters.
-To design and evaluate our model, we are planning to use the Yelp dataset. 
+Being in a street like this is a double-edged sword for the individual restaurant.
+On one side, it is valuable because it gets them the attention of potential customers for free.
+On the other hand, the restaurants are competing for customers with similar needs and the offerings are not free from overlap.
+We found that dynamics of clusters have been studied in the literature, e.g. \cite{mccann2002industrial, porter1998clusters, schmitz1999global}.
+
+When a new business opens in a cluster, this delicate balance between businesses is disturbed.
+The goal of this project is to model the impact of a new business on the existing businesses.
+Our hypothesis is that the new business has an impact on the perception of customers of existing businesses.
+With increased competition, customers have to reevaluate existing businesses taking into account the new options.
+We use customer ratings as a proxy for the value of a business and to observe this reevaluation.
 
 \section*{Main Objectives}
+We identify two main components of our machine learning project:
 \begin{enumerate}
 \item Business Clustering
 \item Impact of a new business on a cluster
@@ -56,27 +52,24 @@ To design and evaluate our model, we are planning to use the Yelp dataset.
 
 \section{The dataset}
 
-Yelp is a website where users review businesses like restaurants. The dataset contains data for more than 40’000 businesses and more than 1 million of reviews. There is a rich set of attributes for each business and there is additional data like the number of checkins that can be used to model the popularity of a place.
+Yelp is a website where users review businesses like restaurants.
+We use the Yelp data that has been released as part of the \textit{Yelp Dataset Challenge}\footnote{\url{http://www.yelp.com/dataset\_challenge}}.
+The dataset contains data from several cities and there is a rich set of attributes for each business.
+
+\begin{itemize}
+  \item 42,153 businesses
+  \item 320,002 business attributes
+  \item 31,617 check-in sets
+  \item 252,898 users
+  \item 403,210 tips
+  \item 1,125,458 reviews
+\end{itemize}
+
+The two most interesting aspects of the dataset for our project are the business attributes and the reviews.
 
 Two data points that are missing from the dataset are the opening and the closing date of a business.
 To compensate for the lack of information, we use a simple heuristic: We assume that the business opened on the date of the first comment and we assume that it has been closed on the date of the last comment if the last comment more than 2 months older than the newest comment in the dataset.
 We argue that this is a reasonable choice because our project requires us to look at businesses with a reasonable number of ratings and in these cases the opening/closing date should be reasonably close to the date of the first and the last review.
-Yelp is a website where users view and review businesses like restaurants. The dataset contains data from several cities and there is a rich set of attributes for each business. \\
-
-\begin{minipage}[b]{0.45\linewidth}
-\begin{itemize}
-	\item[\includegraphics{Yelp_logo.png}]42,153 businesses 
-	\item[\includegraphics{Yelp_logo.png}] 320,002 business attr.
-    \item[\includegraphics{Yelp_logo.png}] 31,617 check-in sets 
-\end{itemize}
-\end{minipage}
-\begin{minipage}[b]{0.45\linewidth}
-\begin{itemize}
-    \item[\includegraphics{Yelp_logo.png}] 252,898 users
-    \item[\includegraphics{Yelp_logo.png}] 403,210 tips 
-    \item[\includegraphics{Yelp_logo.png}] 1,125,458 reviews
-\end{itemize}
-\end{minipage}
 
 \section{Preprocessing}
 \subsection{Running average of ratings}
@@ -89,7 +82,7 @@ In addition, we filter out businesses with a low number of ratings.
 \centering
 \includegraphics[width=\columnwidth]{moving_avg.pdf}
 \caption{ Moving average of ratings for a specific business}
-\label{fig:correlation}
+\label{fig:moving_average}
 \end{figure}
 
 \subsection{Clustering}
@@ -99,7 +92,7 @@ We checked different clustering algorithms and for the same number of clusters, 
 \centering
 \includegraphics[width=\columnwidth]{clusters.png}
 \caption{ K-Means and DBSCAN clustering}
-\label{fig:correlation}
+\label{fig:clusters}
 \end{figure}
 
 As we previously described in the introduction, we are interested to look at clusters of businesses.
@@ -107,18 +100,14 @@ The first step in our project is thus to find a good way of clustering businesse
 We found that using zip codes to group businesses is ineffective as groups of businesses often span zip code boundaries.
 We experimented with multiple clustering methods and ended up using k-means clustering with the geographical location as features because we are interested to observe interaction between businesses that are physically close to each other. Using k-means we are taking the advantage of clustering close businesses together and also putting far businesses that are not influencing each other into different clusters. In this case we can assume that the businesses in two different clusters are independent, and only businesses in one cluster influence each others behaviors. We will have a brief overview on the different clustering techniques used and a benchmark that reasons which one works the best in the case of our study.
 
-\section{Feature selection}
-In various domains, like text learning, image classification, and specially cases where there are many features compared to data samples feature selection techniques are used. The feature sets selected for our model plays an important role to define a better feature similarity measure which can lead to improvement of our prediction algorithms and also finding correlations between different businesses.
-Once feature which is used to find the correlations of business ratings in section ~\ref{sec:correlation_of_ratings}, is the moving average of ratings stars. This feature give us an understanding of how a business was performing in a period of time and how the users rated that specific business in that time.
 
-
-\section{Correlation of ratings}
+\subsection{Correlation of ratings}
 \label{sec:correlation_of_ratings}
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{cov_cluster_28}
 \caption{Correlation between ratings of businesses in the same cluster}
-\label{fig:correlation}
+\label{fig:covmat}
 \end{figure}
 After getting the clusters, we analyze the correlation of ratings between different businesses in the same cluster.
 To do so, we first apply a Gaussian filter to the time series of ratings to smooth out local fluctuations in ratings. The correlation of the ratings is then given by:
@@ -133,12 +122,39 @@ In this step we discard all businesses with a low number of ratings because they
 
 As Figure~\ref{fig:correlation} shows, there are a couple of cases with strong correlation.
 
+
 \section{Features}
-We found that a combination of geographical distance, price range difference, age, and business categories work best as features to describe the relationship between two businesses. The categories encode attributes of a restaurant like the type of food that it serves.
+In various domains, like text learning, image classification, and specially cases where there are many features compared to data samples feature selection techniques are used. The feature sets selected for our model plays an important role to define a better feature similarity measure which can lead to improvement of our prediction algorithms and also finding correlations between different businesses.
+Once feature which is used to find the correlations of business ratings in Section~\ref{sec:correlation_of_ratings}, is the moving average of ratings stars. This feature give us an understanding of how a business was performing in a period of time and how the users rated that specific business in that time.
+
+Since the motivation is predicting the impact of the businesses within a cluster, it is natural to consider pairwise metrics when constructing the features for the models. To this end, we constructed features out of the pairwise comparison of the attributes of the businesses in the dataset. Some of the business attributes in the dataset are:
+\begin{itemize}
+  \item Type of the business: restaurant, lounge, etc.
+  \item Price Range: \$, \$\$, ...
+\end{itemize}
+
+We tried three different sets of features.
+
+First set of features: Assign a feature vector for a pair of businesses. Every feature in the vector is either 1 or -1 and corresponds to an attribute in the dataset. Value assignment of the features is as follows:
+\begin{itemize}
+\item 1: the two businesses have the same (if attribute is discrete) or strongly overlapping (if the attribute is continuous) values for the corresponding attribute
+\item -1: the two businesses have the different (if attribute is discrete) or non-overlapping (if the attribute is continuous) values for the corresponding attribute
+\end{itemize}
+
+Second set of features: The structure is the same as the first set of features, with the difference that each feature can have 3 values:
+(sub bullets?)
+\begin{itemize}
+\item 2: the two businesses have the same (if attribute is discrete) or strongly overlapping (if the attribute is continuous) values for the corresponding attribute
+\item 1: one of the two businesses has a given attribute but not the other
+\item 0: none of the businesses have a given attribute
+\end{itemize}
+
+Third set of features: For all continuous values, we use the distance as a feature and we concatenate the binary features of the two businesses.
+
 
 \section{Models}
-All the analysis in the project was based on using the pairwise features outlined above for predicting pairwise metrics to be defined in what follows. Specifically, in this section we introduce 4 different metrics which we will henceforth call "pairwise impact metrics". 
-
+All the analysis in the project was based on using the pairwise features outlined above for predicting pairwise metrics to be defined in what follows.
+Specifically, in this section we introduce 4 different metrics which we will henceforth call "pairwise impact metrics".
 \textit{NOTE:} Anything below is within a cluster
 
 
@@ -213,29 +229,6 @@ The method to apply was very similar to that for the trend analysis, with the di
 \end{equation*}
 with everything except for $s$ is as defined in the previous subsection. $s$ is the slope to the fitted line for the whole time window .
 
-
-\subsection*{Correlation Analysis}
-\begin{figure}[h]
-\centering
-\includegraphics[width=\columnwidth]{corr.pdf}
-\caption{Example of correlation analysis for a pair of businesses}
-\end{figure}
-
-\textbf{\textit{Hypothesis}} : None of the previous approaches provided an adequate metric.
-For our last model we opted to use a correlation metric which reflects the relationship of two businesses over a long period of time.\\
-\textbf{\textit{Proxy}} : Compute the correlation of ratings over time.\\
-\textbf{\textit{Expected results}} : The correlation can be predicted using the attributes of the existing businesses and the new business. 
-
-%----------------------------------------------------------------------------------------
-%	RESULTS 
-%----------------------------------------------------------------------------------------
-
-\section*{Results}
-%
-The following table contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
-The cluster consists of 147 businesses which corresponds to 10730 pairings.
-We did two types of experiments: (a) classification of positive vs. non-positive outcomes for all models and (b) classification of significant vs. insignificant outcomes (absolute value bigger than a certain threshold) for all models.
-
 \begin{table*}[ht!]
 \centering
 \begin{tabular}{@{}llrrrr@{}}
@@ -255,9 +248,36 @@ We did two types of experiments: (a) classification of positive vs. non-positive
 \bottomrule
 \end{tabular}
 \caption{Training and 10-fold cross-validation score for predictions}
+\label{tab:results}
 \end{table*}
 
-\textit{Note}: We do not present the results for linear, poly and sigmoid kernels because the results were significantly worse than SVM with the rbf kernel.
+\subsection*{Correlation Analysis}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{corr.pdf}
+\caption{Example of correlation analysis for a pair of businesses}
+\end{figure}
+
+\textbf{\textit{Hypothesis}} : None of the previous approaches provided an adequate metric.
+For our last model we opted to use a correlation metric which reflects the relationship of two businesses over a long period of time.\\
+\textbf{\textit{Proxy}} : Compute the correlation of ratings over time.\\
+\textbf{\textit{Expected results}} : The correlation can be predicted using the attributes of the existing businesses and the new business. 
+
+%----------------------------------------------------------------------------------------
+%	RESULTS 
+%----------------------------------------------------------------------------------------
+
+\section{Results}
+%
+We used Python to preprocess the data and used Scikit \cite{pedregosa2011scikit} to perform the machine learning tasks.
+We found that the previously presented feature sets performed very similarly. In the following section, we are presenting the results for the first feature set.
+Table~\ref{tab:results} contains the mean training score and the 10-fold cross-validation score for predictions in a single cluster.
+The cluster consists of 147 businesses which corresponds to 10730 pairings.
+We did two types of experiments: (a) classification of positive vs. non-positive outcomes for all models and (b) classification of significant vs. insignificant outcomes (absolute value bigger than a certain threshold) for all models.
+For every model except Correlation Analysis, we also considered different lengths of periods to fit the model.
+We found that there were only minor differences between a period of 60 days and 90 days.
+
+We also collected results for linear, poly and sigmoid kernels but we omit them here due to their poor performance.
 
 \section{Conclusion}
 We tried to predict the interaction of two businesses with multiple models.
@@ -280,6 +300,6 @@ Since we have used very common business attributes like geographic distance, ope
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
 \bibliographystyle{abbrv}
-\bibliography{main}  % vldb_sample.bib is the name of the Bibliography in this case
+\bibliography{references}  % vldb_sample.bib is the name of the Bibliography in this case
 
 \end{document}

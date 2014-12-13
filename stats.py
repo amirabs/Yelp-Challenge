@@ -9,9 +9,7 @@ from read_data import *
 from clustering import *
 from common import *
 
-def delta_trend(x, y):
-    window_size = 60
-
+def delta_trend(x, y, window_size):
     # Make sure that x is the older business (swap businesses if necessary)
     if y.open_date < x.open_date:
         x, y = y, x
@@ -67,18 +65,16 @@ def delta_trend(x, y):
 
     return delta
 
-def delta_trend_vec(businesses):
+def delta_trend_vec(businesses, window_size):
     print "Generating delta trend vector"
 
     result = []
     for i in range(len(businesses)):
         for j in range(i):
-            result.append(delta_trend(businesses[i], businesses[j]))
+            result.append(delta_trend(businesses[i], businesses[j], window_size))
     return result
 
-def delta_mean(x, y):
-    window_size = 60
-
+def delta_mean(x, y, window_size):
     # Make sure that x is the older business (swap businesses if necessary)
     if y.open_date < x.open_date:
         x, y = y, x
@@ -127,13 +123,13 @@ def delta_mean(x, y):
 
     return delta
 
-def delta_mean_vec(businesses):
+def delta_mean_vec(businesses, window_size):
     print "Generating delta mean vector"
 
     result = []
     for i in range(len(businesses)):
         for j in range(i):
-            result.append(delta_mean(businesses[i], businesses[j]))
+            result.append(delta_mean(businesses[i], businesses[j], window_size))
     return result
 
 def gen_trend(x, y, window_size):
@@ -280,38 +276,44 @@ def cluster_num(businesses):
 	return businesses[-1].cluster_id
 
 def pair_cor():
-	review_count_thres=500
+    review_count_thres=500
 
-	businesses_list=load_businesses("./dataset")
-	businesses_list.sort(key=operator.attrgetter('business_id'));
-	clusters=cluster_business(businesses_list)
-	for c in clusters:
-		if(len(c.businesses)>3000):
-			clus=c
-	# clus = Cluster(businesses_list)
-	cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clus.businesses)
-	print len(cluster_businesses)
-	load_reviews("./dataset",cluster_businesses)
+    businesses_list=load_businesses("./dataset")
+    businesses_list.sort(key=operator.attrgetter('business_id'));
+    clusters=cluster_business(businesses_list)
+    for c in clusters:
+        if(len(c.businesses)>3000):
+            clus=c
+    # clus = Cluster(businesses_list)
+    cluster_businesses = filter(lambda b: b.review_count > review_count_thres, clus.businesses)
+    print len(cluster_businesses)
+    load_reviews("./dataset",cluster_businesses)
 
-	corr=correlation_mat(cluster_businesses)
-	to_file(corr,len(cluster_businesses))
+    corr=correlation_mat(cluster_businesses)
+    to_file(corr,len(cluster_businesses))
 
-        # Plot moving average for business with most ratings
-	# sorted(cluster_businesses, key=(lambda b: b.review_count))[-1].plot_moving_avg()
+    # Plot moving average for business with most ratings
+    # sorted(cluster_businesses, key=(lambda b: b.review_count))[-1].plot_moving_avg()
 
-	trend_vec = gen_trend_vec(cluster_businesses, 60)
-	np.savetxt("gen_trend_1d.txt", trend_vec)
+    for window_size in [60, 90]:
+        trend_vec = gen_trend_vec(cluster_businesses, window_size)
+        np.savetxt(str(window_size) + "_gen_trend_1d.txt", trend_vec)
 
-	delta_vec = delta_trend_vec(cluster_businesses)
-	np.savetxt("delta_1d.txt", delta_vec)
+        delta_vec = delta_trend_vec(cluster_businesses, window_size)
+        np.savetxt(str(window_size) + "_delta_1d.txt", delta_vec)
 
-	delta_mean = delta_mean_vec(cluster_businesses)
-	np.savetxt("mean_1d.txt", delta_mean)
+        delta_mean = delta_mean_vec(cluster_businesses, window_size)
+        np.savetxt(str(window_size) + "_mean_1d.txt", delta_mean)
 
-	generate_cat_features(cluster_businesses)
-	features = construct_feature_diff_matrix(cluster_businesses)
-	print features.shape
-	np.savetxt("feature_mat.txt",features)
+        generate_cat_features(cluster_businesses)
+
+        features = construct_feature_diff_matrix(cluster_businesses, False)
+        np.savetxt(str(window_size) + "_feature_mat.txt", features)
+        print features.shape
+
+        rich_features = construct_feature_diff_matrix(cluster_businesses, True)
+        np.savetxt(str(window_size) + "_rich_feature_mat.txt", rich_features)
+        print rich_features.shape
 
 def to_file(corr,n):
 	corr_1d=np.zeros((n)*(n-1)/2)
